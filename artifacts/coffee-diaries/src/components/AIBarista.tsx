@@ -93,7 +93,7 @@ export function AIBarista() {
               initial={{ opacity: 0, y: 10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.9 }}
-              className="bg-card text-foreground px-4 py-2 rounded-2xl rounded-br-sm shadow-lg mb-4 text-sm font-medium border border-border max-w-[200px] text-center"
+              className="bg-[#FCF8F3] dark:bg-[#332723] text-foreground px-4 py-2 rounded-2xl rounded-br-sm shadow-[0_4px_20px_rgba(50,35,25,0.10)] mb-4 text-sm font-medium border border-primary/40 max-w-[200px] text-center"
             >
               {bubbleText}
             </motion.div>
@@ -109,22 +109,24 @@ export function AIBarista() {
           )}
           aria-label="Open AI Barista Chat"
         >
-          {/* Steam */}
+          {/* Steam — soft cream wisps */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex gap-1">
-            <div className="w-1 h-4 bg-primary/20 dark:bg-primary/40 rounded-full animate-steam"></div>
-            <div className="w-1 h-5 bg-primary/20 dark:bg-primary/40 rounded-full animate-steam-delay"></div>
-            <div className="w-1 h-3 bg-primary/20 dark:bg-primary/40 rounded-full animate-steam" style={{ animationDelay: '0.5s' }}></div>
+            <div className="w-[3px] h-4 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam"></div>
+            <div className="w-[3px] h-5 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam-delay"></div>
+            <div className="w-[3px] h-3 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam" style={{ animationDelay: '0.5s' }}></div>
           </div>
-          
-          {/* Mug Body */}
-          <div className="w-14 h-12 bg-white dark:bg-card border-2 border-primary rounded-b-xl rounded-t-sm absolute bottom-0 left-0 shadow-md">
+
+          {/* Mug Body — soft ivory cup */}
+          <div className="w-14 h-12 bg-[#FCF8F3] dark:bg-[#332723] border-2 border-primary rounded-b-xl rounded-t-sm absolute bottom-0 left-0 shadow-[0_4px_16px_rgba(50,35,25,0.12)]">
+            {/* Coffee fill — dark maroon top strip */}
+            <div className="absolute top-0 left-0 right-0 h-[6px] bg-primary/80 rounded-t-sm" />
             {/* Face */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pt-3">
               <div className="flex gap-3 mb-1">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-blink"></div>
-                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-blink"></div>
+                <div className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full animate-blink"></div>
+                <div className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full animate-blink"></div>
               </div>
-              <div className="w-4 h-2 border-b-2 border-primary rounded-full"></div>
+              <div className="w-4 h-2 border-b-2 border-[#2B2623] dark:border-[#F5EFE6] rounded-full"></div>
             </div>
           </div>
           {/* Handle */}

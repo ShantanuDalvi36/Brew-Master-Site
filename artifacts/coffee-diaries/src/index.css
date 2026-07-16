@@ -44,78 +44,95 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE */
+/* LIGHT MODE — Matte Cream & Dark Maroon */
 :root {
-  --background: 33 46% 91%; /* #F5E9DA warm cream */
-  --foreground: 26 8% 17%; /* #2E2A27 text */
-  --border: 29 39% 84%; /* #E8D5C4 */
-  --input: 29 39% 84%;
-  --ring: 0 50% 24%;
+  /* Backgrounds */
+  --background: 36 43% 93%;    /* #F5EFE6 matte cream */
+  --foreground: 18 10% 15%;    /* #2B2623 espresso text */
+  --border: 28 25% 79%;        /* #D9C9BA warm beige */
+  --input: 28 25% 79%;
+  --ring: 354 50% 24%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 26 8% 17%;
-  --card-border: 29 39% 84%;
+  /* Cards */
+  --card: 34 60% 97%;          /* #FCF8F3 soft ivory */
+  --card-foreground: 18 10% 15%;
+  --card-border: 28 25% 79%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 26 8% 17%;
-  --popover-border: 29 39% 84%;
+  /* Popovers */
+  --popover: 34 60% 97%;
+  --popover-foreground: 18 10% 15%;
+  --popover-border: 28 25% 79%;
 
-  --primary: 0 50% 24%; /* #5B1E1E burgundy */
-  --primary-foreground: 33 46% 91%;
+  /* Primary — Dark Maroon #5A1E24 */
+  --primary: 354 50% 24%;
+  --primary-foreground: 36 43% 93%;
 
-  --secondary: 29 39% 84%; /* #E8D5C4 */
-  --secondary-foreground: 0 50% 24%;
+  /* Secondary — Coffee Brown #6F4E37 */
+  --secondary: 31 33% 86%;     /* #E8DDD1 warm latte (secondary bg) */
+  --secondary-foreground: 18 10% 15%;
 
-  --muted: 29 39% 84%;
-  --muted-foreground: 12 44% 33%; /* #7A3E2F secondary accent */
+  /* Muted */
+  --muted: 31 33% 86%;
+  --muted-foreground: 25 8% 51%;  /* #8A8078 muted text */
 
-  --accent: 12 44% 33%;
-  --accent-foreground: 33 46% 91%;
+  /* Accent — Coffee Brown */
+  --accent: 25 32% 33%;        /* #6F4E37 coffee brown */
+  --accent-foreground: 36 43% 93%;
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  /* Destructive */
+  --destructive: 0 37% 47%;    /* #A64B4B */
+  --destructive-foreground: 36 43% 93%;
 
   --radius: 1.25rem; /* 20px */
 }
 
 .dark {
-  --background: 12 24% 8%; /* #1A1210 deep espresso */
-  --foreground: 33 46% 91%; /* warm cream */
-  --border: 10 17% 19%;
-  --input: 10 17% 19%;
-  --ring: 12 44% 38%;
+  /* Backgrounds — warm coffee-shop darkness, never pure black */
+  --background: 15 14% 10%;    /* #1E1715 */
+  --foreground: 36 43% 93%;    /* #F5EFE6 cream text */
+  --border: 14 16% 25%;        /* #4A3B36 */
+  --input: 14 16% 25%;
+  --ring: 353 30% 50%;
 
-  --card: 10 19% 12%; /* #251B19 */
-  --card-foreground: 33 46% 91%;
-  --card-border: 10 17% 19%;
+  /* Cards */
+  --card: 13 18% 17%;          /* #332723 */
+  --card-foreground: 36 43% 93%;
+  --card-border: 14 16% 25%;
 
-  --popover: 10 19% 12%;
-  --popover-foreground: 33 46% 91%;
-  --popover-border: 10 17% 19%;
+  /* Popovers */
+  --popover: 13 18% 17%;
+  --popover-foreground: 36 43% 93%;
+  --popover-border: 14 16% 25%;
 
-  --primary: 12 44% 38%; /* #8C4736 */
-  --primary-foreground: 33 46% 91%;
+  /* Primary — Warm Maroon-Rose #A65A63 */
+  --primary: 353 30% 50%;
+  --primary-foreground: 36 43% 93%;
 
-  --secondary: 10 17% 19%;
-  --secondary-foreground: 33 46% 91%;
+  /* Secondary bg */
+  --secondary: 14 18% 15%;     /* #2B211E */
+  --secondary-foreground: 36 43% 93%;
 
-  --muted: 10 17% 19%;
-  --muted-foreground: 30 29% 73%;
+  /* Muted */
+  --muted: 14 18% 15%;
+  --muted-foreground: 27 14% 60%;  /* #A79A8D */
 
-  --accent: 12 44% 38%;
-  --accent-foreground: 33 46% 91%;
+  /* Accent — Warm Gold #B58A62 */
+  --accent: 32 31% 55%;
+  --accent-foreground: 36 43% 93%;
 
-  --destructive: 0 62% 30%;
-  --destructive-foreground: 33 46% 91%;
+  /* Destructive */
+  --destructive: 0 37% 47%;
+  --destructive-foreground: 36 43% 93%;
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground transition-colors duration-300;
+    @apply font-sans antialiased bg-background text-foreground;
   }
 
   h1, h2, h3, h4, h5, h6 {

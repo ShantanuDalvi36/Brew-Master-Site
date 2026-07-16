@@ -1,0 +1,325 @@
+Redesign the entire color system of the existing Coffee Diaries website while preserving the current layout, components, spacing, and animations.
+
+The objective is to make the website feel like a premium coffee journal with a calm, elegant, matte finish.
+
+DO NOT redesign the UI structure.
+DO NOT change the navigation or page layout.
+Only improve the visual identity through a professional color system.
+
+==================================================
+DESIGN PHILOSOPHY
+==================================================
+
+The website should feel like:
+
+- A luxury specialty coffee café
+- A leather-bound coffee journal
+- Warm and inviting
+- Minimal and elegant
+- Soft matte finish
+- Editorial and timeless
+
+Avoid bright colors.
+
+Avoid high saturation.
+
+Avoid glossy effects.
+
+Everything should feel warm and comfortable.
+
+==================================================
+LIGHT MODE
+==================================================
+
+Use this exact palette.
+
+Background
+
+--bg-primary: #F5EFE6;
+(Mattee Cream)
+
+Secondary Background
+
+--bg-secondary: #E8DDD1;
+(Warm Latte)
+
+Cards
+
+--bg-card: #FCF8F3;
+(Soft Ivory)
+
+Primary Accent
+
+--primary: #5A1E24;
+(Dark Maroon)
+
+Primary Hover
+
+--primary-hover: #742731;
+
+Secondary Accent
+
+--secondary: #6F4E37;
+(Coffee Brown)
+
+Primary Text
+
+--text-primary: #2B2623;
+
+Secondary Text
+
+--text-secondary: #5C524A;
+
+Muted Text
+
+--text-muted: #8A8078;
+
+Borders
+
+--border: #D9C9BA;
+
+Success
+
+--success: #7B9E6A;
+
+Warning
+
+--warning: #C28A4A;
+
+Error
+
+--danger: #A64B4B;
+
+==================================================
+DARK MODE
+==================================================
+
+Dark mode should NOT use pure black.
+
+Instead create a warm coffee-shop atmosphere.
+
+Use these colors.
+
+Background
+
+--bg-primary: #1E1715;
+
+Secondary Background
+
+--bg-secondary: #2B211E;
+
+Cards
+
+--bg-card: #332723;
+
+Primary Accent
+
+--primary: #A65A63;
+
+Primary Hover
+
+--primary-hover: #BF6C74;
+
+Secondary Accent
+
+--secondary: #B58A62;
+
+Primary Text
+
+--text-primary: #F5EFE6;
+
+Secondary Text
+
+--text-secondary: #DCCFC2;
+
+Muted Text
+
+--text-muted: #A79A8D;
+
+Borders
+
+--border: #4A3B36;
+
+==================================================
+SURFACES
+==================================================
+
+Every surface should have a soft matte appearance.
+
+Do NOT use glossy gradients.
+
+Use mostly flat colors with extremely subtle depth.
+
+Cards should feel like premium paper placed on a wooden table.
+
+==================================================
+BUTTONS
+==================================================
+
+Primary Button
+
+Background:
+Dark Maroon
+
+Text:
+Cream
+
+Hover:
+Slightly lighter maroon
+
+Shadow:
+Very soft
+
+Border Radius:
+18px
+
+Transition:
+250ms ease
+
+Secondary Button
+
+Transparent background
+
+1px maroon border
+
+Maroon text
+
+Hover:
+Soft cream background
+
+==================================================
+CARDS
+==================================================
+
+Cards should have
+
+20px border radius
+
+Thin beige border
+
+Very soft shadow
+
+No heavy elevation
+
+Hover
+
+Lift upward 4px
+
+Shadow slightly increases
+
+Image zooms by approximately 4%
+
+==================================================
+NAVBAR
+==================================================
+
+Sticky navbar.
+
+Background should become slightly blurred while scrolling.
+
+Use a frosted matte effect.
+
+Border should be extremely subtle.
+
+Active page should use the dark maroon accent.
+
+==================================================
+TYPOGRAPHY
+==================================================
+
+Headings
+
+Use the darkest espresso text color.
+
+Body text should be softer for comfortable reading.
+
+Never use pure black.
+
+==================================================
+ICONS
+==================================================
+
+Icons should use the coffee brown color.
+
+Active icons use dark maroon.
+
+==================================================
+CHATBOT (THE BARISTA)
+==================================================
+
+The coffee mug character should match the new palette.
+
+Cup
+
+Ivory
+
+Coffee
+
+Dark Maroon
+
+Eyes
+
+Espresso Black
+
+Steam
+
+Soft Cream
+
+Speech Bubble
+
+Light cream background
+
+Dark text
+
+Maroon outline
+
+The character should naturally blend into the website instead of looking like a floating widget.
+
+==================================================
+THEME SWITCH
+==================================================
+
+Implement smooth transitions between Light Mode and Dark Mode.
+
+Transition duration
+
+300ms
+
+Animate
+
+Background colors
+
+Cards
+
+Buttons
+
+Text
+
+Icons
+
+Borders
+
+No flashing.
+
+==================================================
+SHADOWS
+==================================================
+
+Use only soft premium shadows.
+
+Example
+
+box-shadow:
+0 8px 30px rgba(50,35,25,0.08);
+
+Avoid dark harsh shadows.
+
+==================================================
+GOAL
+==================================================
+
+The final website should feel like browsing a handcrafted coffee journal inside a quiet specialty café.
+
+The experience should be calming, elegant, premium, and timeless.
+
+Users should immediately associate the visual identity with coffee through the warm matte creams, rich maroons, earthy browns, and subtle textures.
