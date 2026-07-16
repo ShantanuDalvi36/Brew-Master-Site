@@ -46,96 +46,84 @@
 
 /* LIGHT MODE — Matte Cream & Dark Maroon */
 :root {
-  /* Backgrounds */
-  --background: 36 43% 93%;    /* #F5EFE6 matte cream */
-  --foreground: 18 10% 15%;    /* #2B2623 espresso text */
-  --border: 28 25% 79%;        /* #D9C9BA warm beige */
+  --background: 36 43% 93%;
+  --foreground: 18 10% 15%;
+  --border: 28 25% 79%;
   --input: 28 25% 79%;
   --ring: 354 50% 24%;
 
-  /* Cards */
-  --card: 34 60% 97%;          /* #FCF8F3 soft ivory */
+  --card: 34 60% 97%;
   --card-foreground: 18 10% 15%;
   --card-border: 28 25% 79%;
 
-  /* Popovers */
   --popover: 34 60% 97%;
   --popover-foreground: 18 10% 15%;
   --popover-border: 28 25% 79%;
 
-  /* Primary — Dark Maroon #5A1E24 */
   --primary: 354 50% 24%;
   --primary-foreground: 36 43% 93%;
 
-  /* Secondary — warm latte */
-  --secondary: 31 33% 86%;     /* #E8DDD1 */
+  --secondary: 31 33% 86%;
   --secondary-foreground: 18 10% 15%;
 
-  /* Muted */
   --muted: 31 33% 86%;
-  --muted-foreground: 25 8% 51%;  /* #8A8078 */
+  --muted-foreground: 25 8% 51%;
 
-  /* Accent — Coffee Brown */
-  --accent: 25 32% 33%;        /* #6F4E37 */
+  --accent: 25 32% 33%;
   --accent-foreground: 36 43% 93%;
 
-  /* Destructive */
-  --destructive: 0 37% 47%;    /* #A64B4B */
+  --destructive: 0 37% 47%;
   --destructive-foreground: 36 43% 93%;
 
   --radius: 1.25rem;
 }
 
 .dark {
-  /* Backgrounds */
-  --background: 15 14% 10%;    /* #1E1715 */
-  --foreground: 36 43% 93%;    /* #F5EFE6 cream text */
-  --border: 14 16% 25%;        /* #4A3B36 */
+  --background: 15 14% 10%;
+  --foreground: 36 43% 93%;
+  --border: 14 16% 25%;
   --input: 14 16% 25%;
   --ring: 353 30% 50%;
 
-  /* Cards */
-  --card: 13 18% 17%;          /* #332723 */
+  --card: 13 18% 17%;
   --card-foreground: 36 43% 93%;
   --card-border: 14 16% 25%;
 
-  /* Popovers */
   --popover: 13 18% 17%;
   --popover-foreground: 36 43% 93%;
   --popover-border: 14 16% 25%;
 
-  /* Primary — Warm Maroon-Rose #A65A63 */
   --primary: 353 30% 50%;
   --primary-foreground: 36 43% 93%;
 
-  /* Secondary bg */
-  --secondary: 14 18% 15%;     /* #2B211E */
+  --secondary: 14 18% 15%;
   --secondary-foreground: 36 43% 93%;
 
-  /* Muted */
   --muted: 14 18% 15%;
-  --muted-foreground: 27 14% 60%;  /* #A79A8D */
+  --muted-foreground: 27 14% 60%;
 
-  /* Accent */
   --accent: 32 31% 55%;
   --accent-foreground: 36 43% 93%;
 
-  /* Destructive */
   --destructive: 0 37% 47%;
   --destructive-foreground: 36 43% 93%;
 }
 
 @layer base {
-  /* GPU-accelerated theme transitions on all elements */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Theme transitions — 500ms, GPU-accelerated */
   *,
   *::before,
   *::after {
     @apply border-border;
     transition:
-      background-color 300ms ease,
-      color 300ms ease,
-      border-color 300ms ease,
-      box-shadow 300ms ease;
+      background-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   body {
@@ -149,76 +137,54 @@
 
 /* ─── Keyframes ─────────────────────────────────────────────────────────── */
 
-/* Mug idle float — 2px travel, spec-compliant */
+/* Mug idle float — 2px, 6s, no bounce */
 @keyframes float-sm {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-2px); }
+  50%       { transform: translateY(-2px); }
 }
 
-/* Kept for any legacy usage */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
-
-/* Steam wisps */
+/* Steam — slow, gentle rise */
 @keyframes float-steam {
-  0%   { transform: translateY(0) scale(1);   opacity: 0; }
-  40%  { transform: translateY(-8px) scale(1.08); opacity: 0.55; }
-  100% { transform: translateY(-18px) scale(1.2); opacity: 0; }
+  0%   { transform: translateY(0px) scaleX(1);    opacity: 0; }
+  35%  { opacity: 0.45; }
+  100% { transform: translateY(-22px) scaleX(1.1); opacity: 0; }
 }
 
-/* Blink — once every ~10 seconds */
-@keyframes blink-slow {
-  0%, 96%, 100% { transform: scaleY(1); }
-  98%            { transform: scaleY(0.08); }
+/* Blink — cycle managed in JS for randomness */
+@keyframes blink-once {
+  0%, 100% { transform: scaleY(1); }
+  50%       { transform: scaleY(0.07); }
 }
 
-/* Legacy blink (4s cycle) */
-@keyframes blink {
-  0%, 96%, 98% { transform: scaleY(1); }
-  97%          { transform: scaleY(0.1); }
-}
-
-/* Mug click bounce */
-@keyframes bounce-sm {
-  0%, 100% { transform: translateY(0); }
-  45%       { transform: translateY(-9px); }
-  70%       { transform: translateY(-3px); }
+/* Mug click — a single gentle dip, no bounce */
+@keyframes mug-tap {
+  0%   { transform: translateY(0px); }
+  40%  { transform: translateY(-6px); }
+  70%  { transform: translateY(-2px); }
+  100% { transform: translateY(0px); }
 }
 
 /* ─── Animation utility classes ─────────────────────────────────────────── */
 
 .animate-float-sm {
-  animation: float-sm 3.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
+  animation: float-sm 6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .animate-steam {
-  animation: float-steam 2.8s ease-out infinite;
+  animation: float-steam 3.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .animate-steam-delay {
-  animation: float-steam 2.8s ease-out infinite 1.4s;
+  animation: float-steam 3.5s cubic-bezier(0.22, 1, 0.36, 1) infinite 1.75s;
 }
 
-/* Slow blink — ~10s cycle */
-.animate-blink-slow {
+.animate-blink-once {
   transform-origin: center;
-  animation: blink-slow 10s infinite;
+  animation: blink-once 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Legacy */
-.animate-blink {
-  transform-origin: center;
-  animation: blink 4s infinite;
-}
-
-.animate-bounce-sm {
-  animation: bounce-sm 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+.animate-mug-tap {
+  animation: mug-tap 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────────────── */

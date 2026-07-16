@@ -8,12 +8,12 @@ import { Footer } from '@/components/Footer';
 import { AIBarista } from '@/components/AIBarista';
 import { LoadingScreen } from '@/components/LoadingScreen';
 
-// Pages
 import Home from '@/pages/Home';
 import Explore from '@/pages/Explore';
 import CoffeeDetail from '@/pages/CoffeeDetail';
 
-const ease = [0.22, 1, 0.36, 1] as const;
+// Luxury easing — used for every transition
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 function PageTransitionWrapper({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -24,7 +24,7 @@ function PageTransitionWrapper({ children }: { children: React.ReactNode }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease }}
+        transition={{ duration: 0.7, ease: EASE }}
       >
         {children}
       </motion.div>
@@ -62,7 +62,7 @@ function App() {
         {!loaded && <LoadingScreen key="loader" onComplete={handleLoadComplete} />}
       </AnimatePresence>
 
-      {/* Render app underneath so it's ready when loader exits */}
+      {/* App renders underneath so it's ready the moment the loader exits */}
       <div style={{ visibility: loaded ? 'visible' : 'hidden' }}>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
           <Router />

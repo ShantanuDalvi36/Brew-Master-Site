@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 const coffeeFacts = [
   "Ethiopia is widely regarded as the birthplace of coffee.",
   "Arabica beans generally contain less caffeine than Robusta.",
@@ -55,11 +57,15 @@ interface LoadingScreenProps {
 
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
-  const [fact] = useState(() => coffeeFacts[Math.floor(Math.random() * coffeeFacts.length)]);
+  const [factIndex, setFactIndex] = useState(() =>
+    Math.floor(Math.random() * coffeeFacts.length),
+  );
+  const [showFact, setShowFact] = useState(true);
 
+  // Coffee fill — takes ~2 seconds to complete
   useEffect(() => {
-    const duration = 1800;
-    const interval = 16;
+    const duration = 2000;
+    const interval = 20;
     const step = (interval / duration) * 100;
 
     const timer = setInterval(() => {
@@ -67,7 +73,8 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         const next = Math.min(prev + step, 100);
         if (next >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 320);
+          // Wait for fill to settle, then fade out loading screen
+          setTimeout(onComplete, 400);
         }
         return next;
       });
@@ -76,26 +83,42 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     return () => clearInterval(timer);
   }, [onComplete]);
 
+  // Cycle facts with a fade-between — every ~4s
+  useEffect(() => {
+    const cycle = setInterval(() => {
+      setShowFact(false);
+      setTimeout(() => {
+        setFactIndex(prev => (prev + 1) % coffeeFacts.length);
+        setShowFact(true);
+      }, 500); // gap between fade-out and fade-in
+    }, 4000);
+
+    return () => clearInterval(cycle);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.9, ease: EASE }}
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
     >
       {/* Animated mug */}
       <div className="relative w-24 h-20 mb-10">
-        {/* Steam wisps */}
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex gap-[6px]">
-          <div className="w-[3px] h-6 bg-primary/25 rounded-full animate-steam" />
-          <div className="w-[3px] h-8 bg-primary/25 rounded-full animate-steam-delay" />
-          <div className="w-[3px] h-5 bg-primary/25 rounded-full animate-steam" style={{ animationDelay: '0.5s' }} />
+        {/* Steam — slow continuous rise */}
+        <div className="absolute -top-9 left-1/2 -translate-x-1/2 flex gap-[6px]">
+          <div className="w-[3px] h-6 bg-primary/22 rounded-full animate-steam" />
+          <div className="w-[3px] h-8 bg-primary/22 rounded-full animate-steam-delay" />
+          <div
+            className="w-[3px] h-5 bg-primary/22 rounded-full animate-steam"
+            style={{ animationDelay: '0.65s' }}
+          />
         </div>
 
-        {/* Mug body with fill */}
+        {/* Mug body — coffee fills upward */}
         <div className="w-20 h-16 border-2 border-primary rounded-b-2xl rounded-t-sm absolute bottom-0 left-0 overflow-hidden bg-[#FCF8F3] dark:bg-[#332723]">
           <div
-            className="absolute bottom-0 left-0 right-0 bg-primary/65 rounded-b-2xl"
+            className="absolute bottom-0 left-0 right-0 bg-primary/60 rounded-b-2xl"
             style={{
               height: `${progress}%`,
               transition: 'height 80ms linear',
@@ -108,40 +131,48 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
       {/* Title */}
       <motion.h1
-        initial={{ opacity: 0, y: 14 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: 0.2, duration: 0.9, ease: EASE }}
         className="font-serif text-3xl font-bold text-primary dark:text-primary-foreground mb-2"
       >
         Coffee Diaries
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: 0.38, duration: 0.9, ease: EASE }}
         className="text-muted-foreground text-sm mb-10"
       >
         Preparing your next cup…
       </motion.p>
 
       {/* Progress bar */}
-      <div className="w-48 h-[2px] bg-border rounded-full overflow-hidden mb-8">
+      <div className="w-48 h-[1.5px] bg-border rounded-full overflow-hidden mb-8">
         <div
-          className="h-full bg-primary rounded-full"
+          className="h-full bg-primary/70 rounded-full"
           style={{ width: `${progress}%`, transition: 'width 80ms linear' }}
         />
       </div>
 
-      {/* Coffee fact */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.55, duration: 0.7 }}
-        className="text-xs text-muted-foreground/60 max-w-[260px] text-center italic leading-relaxed"
-      >
-        ☕ {fact}
-      </motion.p>
+      {/* Coffee fact — fades between facts */}
+      <div className="h-10 flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          {showFact && (
+            <motion.p
+              key={factIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="text-xs text-muted-foreground/55 max-w-[260px] text-center italic leading-relaxed"
+            >
+              ☕ {coffeeFacts[factIndex]}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }

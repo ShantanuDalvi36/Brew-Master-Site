@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 const cannedResponses = [
-  "Great choice! Let me think about that... ☕",
+  "Great choice! Let me think about that… ☕",
   "A classic! You can never go wrong with that one.",
   "Have you tried pairing it with a butter croissant?",
   "Ah, the origin of that bean is fascinating.",
@@ -25,7 +27,10 @@ const promptMessages = [
 export function AIBarista() {
   const [isOpen, setIsOpen] = useState(false);
   const [bubbleText, setBubbleText] = useState<string | null>(null);
-  const [isBouncing, setIsBouncing] = useState(false);
+  const [isTapping, setIsTapping] = useState(false);
+  const blinkTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const eyeLeftRef = useRef<HTMLDivElement>(null);
+  const eyeRightRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<{ id: number; text: string; sender: 'user' | 'barista' }[]>([
     { id: 1, text: "Hello! What can I brew for you today?", sender: 'barista' },
@@ -33,28 +38,48 @@ export function AIBarista() {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Idle speech bubble — appears occasionally when chat is closed
+  // Random blink every 10–15 seconds — adds a class, removes it after animation ends
+  useEffect(() => {
+    const scheduleBlink = () => {
+      const delay = 10000 + Math.random() * 5000; // 10–15s
+      blinkTimerRef.current = setTimeout(() => {
+        [eyeLeftRef, eyeRightRef].forEach(ref => {
+          ref.current?.classList.add('animate-blink-once');
+          ref.current?.addEventListener('animationend', () => {
+            ref.current?.classList.remove('animate-blink-once');
+          }, { once: true });
+        });
+        scheduleBlink();
+      }, delay);
+    };
+
+    scheduleBlink();
+    return () => {
+      if (blinkTimerRef.current) clearTimeout(blinkTimerRef.current);
+    };
+  }, []);
+
+  // Idle speech bubble — fades in, pauses, fades out. Never pops.
   useEffect(() => {
     if (isOpen) {
       setBubbleText(null);
       return;
     }
 
-    // Show first bubble after 6s, then randomly every 10–18s
     const showBubble = () => {
-      const randomMsg = promptMessages[Math.floor(Math.random() * promptMessages.length)];
-      setBubbleText(randomMsg);
-      setTimeout(() => setBubbleText(null), 4000);
+      const msg = promptMessages[Math.floor(Math.random() * promptMessages.length)];
+      setBubbleText(msg);
+      setTimeout(() => setBubbleText(null), 4500);
     };
 
-    const firstTimeout = setTimeout(showBubble, 6000);
-
+    // First bubble after 7s, then randomly
+    const firstTimer = setTimeout(showBubble, 7000);
     const interval = setInterval(() => {
-      if (Math.random() < 0.35) showBubble();
-    }, 12000);
+      if (Math.random() < 0.4) showBubble();
+    }, 13000);
 
     return () => {
-      clearTimeout(firstTimeout);
+      clearTimeout(firstTimer);
       clearInterval(interval);
     };
   }, [isOpen]);
@@ -65,12 +90,14 @@ export function AIBarista() {
   }, [messages]);
 
   const handleMugClick = () => {
-    setIsBouncing(true);
+    if (isOpen) return;
+    setIsTapping(true);
     setBubbleText(null);
+    // Wait for the gentle tap animation then open panel
     setTimeout(() => {
-      setIsBouncing(false);
+      setIsTapping(false);
       setIsOpen(true);
-    }, 400);
+    }, 560);
   };
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -91,14 +118,15 @@ export function AIBarista() {
     <>
       {/* The Mug Character */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
+        {/* Speech bubble — fades in/out, never pops */}
         <AnimatePresence>
           {bubbleText && !isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.9 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-[#FCF8F3] dark:bg-[#332723] text-foreground px-4 py-2 rounded-2xl rounded-br-sm shadow-[0_4px_20px_rgba(50,35,25,0.10)] mb-4 text-sm font-medium border border-primary/40 max-w-[200px] text-center"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.55, ease: EASE }}
+              className="bg-[#FCF8F3] dark:bg-[#332723] text-foreground px-4 py-2 rounded-2xl rounded-br-sm shadow-[0_4px_20px_rgba(50,35,25,0.08)] mb-4 text-sm font-medium border border-primary/30 max-w-[200px] text-center"
             >
               {bubbleText}
             </motion.div>
@@ -109,26 +137,38 @@ export function AIBarista() {
           onClick={handleMugClick}
           className={cn(
             'relative w-16 h-16 cursor-pointer focus:outline-none',
-            isBouncing ? 'animate-bounce-sm' : 'animate-float-sm',
+            isTapping ? 'animate-mug-tap' : 'animate-float-sm',
             isOpen && 'opacity-0 pointer-events-none',
           )}
+          style={{ transition: 'opacity 400ms cubic-bezier(0.22,1,0.36,1)' }}
           aria-label="Open AI Barista Chat"
         >
-          {/* Steam — rises continuously */}
+          {/* Steam — rises continuously, slow */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex gap-1">
-            <div className="w-[3px] h-4 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam" />
-            <div className="w-[3px] h-5 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam-delay" />
-            <div className="w-[3px] h-3 bg-[#F5EFE6]/70 dark:bg-[#DCCFC2]/50 rounded-full animate-steam" style={{ animationDelay: '0.5s' }} />
+            <div className="w-[3px] h-4 bg-[#F5EFE6]/65 dark:bg-[#DCCFC2]/45 rounded-full animate-steam" />
+            <div className="w-[3px] h-5 bg-[#F5EFE6]/65 dark:bg-[#DCCFC2]/45 rounded-full animate-steam-delay" />
+            <div
+              className="w-[3px] h-3 bg-[#F5EFE6]/65 dark:bg-[#DCCFC2]/45 rounded-full animate-steam"
+              style={{ animationDelay: '0.6s' }}
+            />
           </div>
 
-          {/* Mug body — ivory, maroon fill strip */}
-          <div className="w-14 h-12 bg-[#FCF8F3] dark:bg-[#332723] border-2 border-primary rounded-b-xl rounded-t-sm absolute bottom-0 left-0 shadow-[0_4px_16px_rgba(50,35,25,0.12)]">
-            <div className="absolute top-0 left-0 right-0 h-[6px] bg-primary/80 rounded-t-sm" />
+          {/* Mug body */}
+          <div className="w-14 h-12 bg-[#FCF8F3] dark:bg-[#332723] border-2 border-primary rounded-b-xl rounded-t-sm absolute bottom-0 left-0 shadow-[0_4px_18px_rgba(50,35,25,0.11)]">
+            <div className="absolute top-0 left-0 right-0 h-[6px] bg-primary/75 rounded-t-sm" />
             {/* Face */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pt-3">
               <div className="flex gap-3 mb-1">
-                <div className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full animate-blink-slow" />
-                <div className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full animate-blink-slow" style={{ animationDelay: '0.05s' }} />
+                <div
+                  ref={eyeLeftRef}
+                  className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full"
+                  style={{ transformOrigin: 'center' }}
+                />
+                <div
+                  ref={eyeRightRef}
+                  className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full"
+                  style={{ transformOrigin: 'center', animationDelay: '0.04s' }}
+                />
               </div>
               <div className="w-4 h-2 border-b-2 border-[#2B2623] dark:border-[#F5EFE6] rounded-full" />
             </div>
@@ -138,24 +178,24 @@ export function AIBarista() {
         </button>
       </div>
 
-      {/* Slide-in Chat Panel */}
+      {/* Slide-in Chat Panel — 650ms, luxury easing, no spring overshoot */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Mobile backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: EASE }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
+              className="fixed inset-0 bg-background/70 backdrop-blur-sm z-50 md:hidden"
             />
 
             <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+              initial={{ x: '100%', opacity: 0.6 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0.6 }}
+              transition={{ duration: 0.65, ease: EASE }}
               className="fixed top-0 right-0 bottom-0 w-full md:w-[380px] bg-card border-l border-border shadow-2xl z-50 flex flex-col"
             >
               <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/30">
@@ -165,7 +205,10 @@ export function AIBarista() {
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors duration-200"
+                  className="p-2 text-muted-foreground rounded-full"
+                  style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1), background-color 350ms cubic-bezier(0.22,1,0.36,1)' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--foreground))')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
                 >
                   <X size={20} />
                 </button>
@@ -195,12 +238,24 @@ export function AIBarista() {
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value)}
                     placeholder="Ask about a coffee..."
-                    className="flex-1 bg-secondary border border-border rounded-full px-4 py-2 text-sm focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.12)] transition-all duration-300"
+                    className="flex-1 bg-secondary border border-border rounded-full px-4 py-2 text-sm focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.10)]"
+                    style={{
+                      transition: 'border-color 350ms cubic-bezier(0.22,1,0.36,1), box-shadow 350ms cubic-bezier(0.22,1,0.36,1)',
+                    }}
                   />
                   <button
                     type="submit"
                     disabled={!inputValue.trim()}
-                    className="p-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/85 hover:scale-[1.05] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                    className="p-2 bg-primary text-primary-foreground rounded-full disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={{
+                      transition: 'background-color 300ms cubic-bezier(0.22,1,0.36,1), transform 300ms cubic-bezier(0.22,1,0.36,1)',
+                    }}
+                    onMouseEnter={e => {
+                      if (inputValue.trim()) (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                    }}
                   >
                     <Send size={18} />
                   </button>

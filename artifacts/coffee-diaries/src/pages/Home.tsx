@@ -17,14 +17,15 @@ const imageMap: Record<string, string> = {
   mocha: mochaImg,
 };
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
+// 80ms stagger between cards
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.06, ease },
+    transition: { duration: 0.7, delay: i * 0.08, ease: EASE },
   }),
 };
 
@@ -35,13 +36,12 @@ export default function Home() {
     <div className="min-h-[100dvh] flex flex-col">
       <HeroSection imagePath={heroImg} />
 
-      {/* Featured Pours — scrolls in once */}
       <motion.section
         className="py-24 px-6 max-w-[1280px] mx-auto w-full"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.6, ease }}
+        transition={{ duration: 0.7, ease: EASE }}
       >
         <div className="flex justify-between items-end mb-12">
           <div>
@@ -54,7 +54,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Cards stagger 60ms each */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredCoffees.map((coffee, i) => (
             <motion.div

@@ -11,10 +11,8 @@ export function Navbar() {
   const [location] = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -26,32 +24,48 @@ export function Navbar() {
   return (
     <>
       <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent',
-          scrolled
-            ? 'bg-background/80 backdrop-blur-md border-border py-4 shadow-sm'
-            : 'bg-transparent py-6'
-        )}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-transparent"
+        style={{
+          // 400ms backdrop + background — no CSS class easing that snaps
+          transition:
+            'background-color 400ms cubic-bezier(0.22,1,0.36,1), backdrop-filter 400ms cubic-bezier(0.22,1,0.36,1), box-shadow 400ms cubic-bezier(0.22,1,0.36,1), border-color 400ms cubic-bezier(0.22,1,0.36,1), padding 400ms cubic-bezier(0.22,1,0.36,1)',
+          backgroundColor: scrolled ? 'hsl(var(--background) / 0.82)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(14px) saturate(1.4)' : 'blur(0px)',
+          boxShadow: scrolled ? '0 1px 24px rgba(50,35,25,0.07)' : 'none',
+          borderBottomColor: scrolled ? 'hsl(var(--border))' : 'transparent',
+          paddingTop: scrolled ? '1rem' : '1.5rem',
+          paddingBottom: scrolled ? '1rem' : '1.5rem',
+        }}
       >
         <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-serif font-bold text-primary dark:text-primary-foreground tracking-tight hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="text-2xl font-serif font-bold text-primary dark:text-primary-foreground tracking-tight"
+            style={{ transition: 'opacity 350ms cubic-bezier(0.22,1,0.36,1)' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.7')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+          >
             Coffee Diaries
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             <div className="flex gap-6">
-              {navLinks.map((link) => (
+              {navLinks.map(link => (
                 <Link
                   key={link.path}
                   href={link.path}
                   data-testid={`link-nav-${link.name.toLowerCase()}`}
                   className={cn(
-                    'text-sm font-medium tracking-wide transition-colors hover:text-primary relative after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300',
+                    'text-sm font-medium tracking-wide relative',
+                    // Underline expands left → right, 350ms
+                    'after:absolute after:-bottom-1 after:left-0 after:h-[1.5px] after:bg-primary after:origin-left',
+                    'after:transition-[transform,opacity] after:duration-[350ms] after:[transition-timing-function:cubic-bezier(0.22,1,0.36,1)]',
                     location === link.path
-                      ? 'text-primary after:w-full'
-                      : 'text-foreground/80 after:w-0 hover:after:w-full'
+                      ? 'text-primary after:scale-x-100 after:opacity-100 after:w-full'
+                      : 'text-foreground/75 after:scale-x-0 after:opacity-0 after:w-full hover:after:scale-x-100 hover:after:opacity-100',
                   )}
+                  style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
                 >
                   {link.name}
                 </Link>
@@ -59,12 +73,21 @@ export function Navbar() {
             </div>
 
             <div className="flex items-center gap-4 border-l border-border pl-6">
-              <Link href="/explore" className="text-foreground hover:text-primary transition-colors">
+              <Link
+                href="/explore"
+                className="text-foreground/75"
+                style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--primary))')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
+              >
                 <Search size={20} strokeWidth={1.5} />
               </Link>
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="text-foreground hover:text-primary transition-colors"
+                className="text-foreground/75"
+                style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--primary))')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
                 aria-label="Toggle theme"
               >
                 {theme === 'dark' ? (
@@ -80,13 +103,15 @@ export function Navbar() {
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-foreground/75"
+              style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
             >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-foreground/75"
+              style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -98,15 +123,16 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-background pt-24 px-6 md:hidden">
           <nav className="flex flex-col gap-6 text-xl font-serif">
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <Link
                 key={link.path}
                 href={link.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  'pb-4 border-b border-border transition-colors',
-                  location === link.path ? 'text-primary font-bold' : 'text-foreground/80'
+                  'pb-4 border-b border-border',
+                  location === link.path ? 'text-primary font-bold' : 'text-foreground/75',
                 )}
+                style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
               >
                 {link.name}
               </Link>

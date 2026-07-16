@@ -30,14 +30,15 @@ const imageMap: Record<string, string> = {
 type FilterType = 'All' | 'Featured' | 'Popular' | 'Hot Coffee' | 'Cold Coffee' | 'Dessert Coffee';
 const filters: FilterType[] = ['All', 'Featured', 'Popular', 'Hot Coffee', 'Cold Coffee', 'Dessert Coffee'];
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
+// 80ms stagger
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.06, ease },
+    transition: { duration: 0.7, delay: i * 0.08, ease: EASE },
   }),
 };
 
@@ -60,12 +61,11 @@ export default function Explore() {
 
   return (
     <div className="min-h-[100dvh] pt-32 pb-24 px-6 max-w-[1280px] mx-auto w-full">
-      {/* Page heading — fades in on load */}
       <motion.div
         className="text-center mb-16"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease }}
+        transition={{ duration: 0.7, ease: EASE }}
       >
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary dark:text-primary-foreground mb-6">
           Explore the Collection
@@ -75,26 +75,25 @@ export default function Explore() {
         </p>
       </motion.div>
 
-      {/* Search and Filters */}
       <motion.div
         className="mb-12 space-y-8"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.12, ease }}
+        transition={{ duration: 0.7, delay: 0.14, ease: EASE }}
       >
+        {/* Search bar — maroon border + glow on focus */}
         <div className="relative max-w-md mx-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5 pointer-events-none transition-colors duration-300" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by name or flavor..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className={cn(
-              "w-full pl-12 pr-4 py-3 bg-card border border-border rounded-full shadow-sm text-foreground",
-              "transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-              "focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.12)]",
-              "placeholder:transition-colors placeholder:duration-300 focus:placeholder:text-muted-foreground/40"
-            )}
+            className="w-full pl-12 pr-4 py-3 bg-card border border-border rounded-full shadow-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.10)]"
+            style={{
+              transition:
+                'border-color 350ms cubic-bezier(0.22,1,0.36,1), box-shadow 350ms cubic-bezier(0.22,1,0.36,1)',
+            }}
           />
         </div>
 
@@ -104,11 +103,15 @@ export default function Explore() {
               key={filter}
               onClick={() => setActiveFilter(filter)}
               className={cn(
-                'px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                'px-5 py-2 rounded-full text-sm font-medium',
                 activeFilter === filter
-                  ? 'bg-primary text-primary-foreground shadow-md scale-[1.02]'
-                  : 'bg-secondary text-foreground hover:bg-secondary/80'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-secondary text-foreground',
               )}
+              style={{
+                transition:
+                  'background-color 350ms cubic-bezier(0.22,1,0.36,1), color 350ms cubic-bezier(0.22,1,0.36,1), box-shadow 350ms cubic-bezier(0.22,1,0.36,1)',
+              }}
             >
               {filter}
             </button>
@@ -116,7 +119,7 @@ export default function Explore() {
         </div>
       </motion.div>
 
-      {/* Grid — cards stagger 60ms each */}
+      {/* Grid */}
       {filteredCoffees.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCoffees.map((coffee, i) => (
@@ -137,7 +140,7 @@ export default function Explore() {
           className="text-center py-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.5, ease: EASE }}
         >
           <p className="font-serif text-2xl text-muted-foreground mb-2">No coffees found</p>
           <p className="text-muted-foreground/70">Try adjusting your search or filter criteria.</p>

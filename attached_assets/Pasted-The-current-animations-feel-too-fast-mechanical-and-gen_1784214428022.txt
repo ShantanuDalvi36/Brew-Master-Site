@@ -1,0 +1,272 @@
+The current animations feel too fast, mechanical, and generic.
+
+Do NOT add more animations.
+
+Instead, redesign the entire motion system to feel like a premium luxury website.
+
+Think Apple, Aesop, Linear, Arc Browser, and Framer—not a typical React template.
+
+========================================================
+
+ANIMATION PHILOSOPHY
+
+The website should feel calm.
+
+Nothing should move suddenly.
+
+Nothing should bounce aggressively.
+
+Every animation should feel intentional.
+
+Movement should be slow, smooth, elegant and almost invisible.
+
+Animations should enhance the experience instead of drawing attention.
+
+========================================================
+
+EASING
+
+Replace every default easing.
+
+Use
+
+cubic-bezier(0.22, 1, 0.36, 1)
+
+for almost every transition.
+
+Avoid ease-in-out.
+
+Avoid linear.
+
+========================================================
+
+DURATION
+
+Current animations are too fast.
+
+Increase durations.
+
+Hover animations:
+350ms
+
+Card hover:
+450ms
+
+Buttons:
+300ms
+
+Navbar:
+400ms
+
+Scroll reveal:
+700ms
+
+Page transitions:
+700ms
+
+Theme transition:
+500ms
+
+Chat panel:
+650ms
+
+Loading fade:
+900ms
+
+========================================================
+
+COFFEE CARDS
+
+Cards should not instantly jump.
+
+Instead
+
+Hover
+
+→ slowly lift upward
+
+translateY(-5px)
+
+Image
+
+→ slowly zoom
+
+scale(1.03)
+
+Shadow
+
+→ slowly deepen
+
+Everything happens together.
+
+No snapping.
+
+========================================================
+
+BUTTONS
+
+Hover should feel soft.
+
+Instead of instantly changing color,
+
+slowly brighten the maroon.
+
+Scale only
+
+1.01
+
+Maximum.
+
+========================================================
+
+NAVBAR
+
+When scrolling
+
+The blur should slowly increase.
+
+Background opacity should transition over 400ms.
+
+Active navigation underline
+
+Should smoothly grow from left to right.
+
+========================================================
+
+PAGE REVEALS
+
+Current reveal animations are too quick.
+
+Every section should
+
+Fade
+
+Translate upward
+
+20px
+
+Duration
+
+700ms
+
+Each card appears
+
+80ms after the previous one.
+
+This creates a natural reading rhythm.
+
+========================================================
+
+PAGE TRANSITIONS
+
+Current page changes feel abrupt.
+
+Fade the current page out.
+
+Fade the next page in.
+
+Duration
+
+700ms.
+
+No sliding pages.
+
+========================================================
+
+AI BARISTA
+
+The mascot should feel alive.
+
+Floating motion
+
+Very subtle.
+
+2px.
+
+Duration
+
+6 seconds.
+
+Steam
+
+Continuous.
+
+Blink
+
+Random
+
+Every 10-15 seconds.
+
+Speech bubble
+
+Fade in
+
+Pause
+
+Fade out.
+
+Never pop instantly.
+
+When opening chat
+
+The mug gently bounces.
+
+The panel slides from the right over
+
+650ms.
+
+========================================================
+
+LOADING SCREEN
+
+Slow down the loading animation.
+
+Steam should rise slowly.
+
+Coffee filling animation
+
+Should take about 2 seconds.
+
+Coffee facts
+
+Fade between each other.
+
+The loading screen should feel relaxing.
+
+========================================================
+
+SHADOWS
+
+Increase shadow transition duration.
+
+Current shadows change too abruptly.
+
+========================================================
+
+SCROLLING
+
+Enable smooth scrolling.
+
+Scrolling should feel heavy and premium.
+
+Avoid sudden acceleration.
+
+========================================================
+
+GENERAL RULES
+
+No bounce animations.
+
+No elastic animations.
+
+No overshoot.
+
+No exaggerated scaling.
+
+No rotations.
+
+No flashy effects.
+
+Everything should feel effortless.
+
+The user should notice the quality but never consciously notice the animation.

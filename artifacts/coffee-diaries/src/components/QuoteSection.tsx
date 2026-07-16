@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function QuoteSection() {
   return (
@@ -10,7 +10,7 @@ export function QuoteSection() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, ease }}
+      transition={{ duration: 0.7, ease: EASE }}
     >
       <div className="max-w-4xl text-center">
         <span className="block text-primary/40 dark:text-primary/20 text-6xl font-serif mb-6">"</span>
