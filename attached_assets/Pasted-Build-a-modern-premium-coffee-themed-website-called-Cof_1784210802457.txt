@@ -1,0 +1,405 @@
+Build a modern, premium coffee-themed website called "Coffee Diaries".
+
+The website should feel like browsing a luxury coffee journal rather than a commercial website. The overall atmosphere should be warm, calming, minimal, elegant, and inviting.
+
+The design language should be inspired by premium editorial websites and specialty coffee cafés.
+
+========================================================
+DESIGN STYLE
+========================================================
+
+Design Keywords:
+- Minimal
+- Editorial
+- Premium
+- Cozy
+- Warm
+- Clean
+- Modern
+- Elegant
+- Spacious
+
+Color Palette
+
+Primary Background:
+#F5E9DA (warm cream)
+
+Secondary Background:
+#E8D5C4
+
+Primary Accent:
+#5B1E1E (deep burgundy)
+
+Secondary Accent:
+#7A3E2F
+
+Text:
+#2E2A27
+
+Cards:
+White with soft shadows
+
+Borders:
+Very subtle
+
+Use lots of whitespace.
+
+Avoid clutter.
+
+Every section should breathe.
+
+========================================================
+TYPOGRAPHY
+========================================================
+
+Headings:
+Playfair Display
+
+Body:
+Inter
+
+Large elegant headings.
+
+Readable body text.
+
+========================================================
+LAYOUT
+========================================================
+
+Create a responsive website.
+
+Desktop:
+Max width around 1280px.
+
+Mobile friendly.
+
+Rounded corners:
+18-20px.
+
+Soft shadows.
+
+Smooth transitions.
+
+Subtle hover effects.
+
+No flashy animations.
+
+========================================================
+NAVIGATION
+========================================================
+
+Minimal sticky navigation bar.
+
+Left:
+
+Coffee Diaries
+
+Right:
+
+Home
+
+Explore
+
+Search Icon
+
+Theme Toggle
+
+Navigation should become slightly blurred while scrolling.
+
+========================================================
+PAGES
+========================================================
+
+Create only these pages.
+
+1. Home
+
+2. Explore
+
+3. Coffee Detail Page (dynamic template)
+
+========================================================
+HOME PAGE
+========================================================
+
+Hero Section
+
+Large coffee image.
+
+Large heading:
+
+Coffee Diaries
+
+Subtitle:
+
+"Every cup tells a story."
+
+Primary button:
+
+Explore Coffees
+
+After hero:
+
+Featured Coffees
+
+Display 3 beautiful coffee cards.
+
+Then
+
+Quote section
+
+Example:
+
+"Coffee is best enjoyed slowly."
+
+Then footer.
+
+========================================================
+EXPLORE PAGE
+========================================================
+
+This is the main page.
+
+Top:
+
+Search bar.
+
+Then categories.
+
+Featured Coffees
+
+Popular
+
+Hot Coffee
+
+Cold Coffee
+
+Dessert Coffee
+
+Each category is displayed as a grid.
+
+Use large image cards.
+
+3 cards per row on desktop.
+
+1 card on mobile.
+
+Each card contains
+
+Large image
+
+Coffee Name
+
+Small description
+
+View Details button
+
+Hover effect:
+
+Card lifts slightly
+
+Image zooms
+
+Shadow increases
+
+Smooth animation.
+
+========================================================
+COFFEE DETAIL PAGE
+========================================================
+
+Large hero image.
+
+Coffee name.
+
+Small introduction paragraph.
+
+Then information displayed inside elegant cards.
+
+Quick Facts
+
+Origin
+
+Strength
+
+Caffeine
+
+Milk Level
+
+Flavor Profile
+
+Ingredients
+
+Recipe
+
+Serving Tips
+
+Similar Coffees
+
+Everything should use reusable card components.
+
+========================================================
+AI BARISTA
+========================================================
+
+The website has a permanent character.
+
+A cute coffee mug.
+
+The mug represents the AI Barista.
+
+The mug stays fixed in the bottom-right corner on every page.
+
+It is NOT just a chat button.
+
+It is a character.
+
+Design:
+
+Cute smiling coffee mug.
+
+Minimal face.
+
+Small eyes.
+
+Friendly smile.
+
+Steam coming from the mug.
+
+Idle animations:
+
+Steam gently moves.
+
+Eyes blink occasionally.
+
+Tiny floating movement.
+
+Very subtle.
+
+Every 30-60 seconds display a small speech bubble.
+
+Examples:
+
+"Need a recommendation?"
+
+"Looking for something sweet?"
+
+"Fresh beans make all the difference."
+
+"Still deciding?"
+
+Bubble disappears automatically.
+
+When the mug is clicked:
+
+The mug performs a tiny bounce animation.
+
+A beautiful right-side panel slides into view.
+
+The page behind remains visible.
+
+The chat panel contains
+
+Header:
+
+☕ The Barista
+
+Welcome message:
+
+"Hello! What can I brew for you today?"
+
+Chat history area.
+
+Input box.
+
+Send button.
+
+The chatbot functionality can be placeholder for now.
+
+Only create the UI.
+
+========================================================
+COMPONENTS
+========================================================
+
+Create reusable components.
+
+Navbar
+
+Footer
+
+CoffeeCard
+
+CategorySection
+
+HeroSection
+
+SearchBar
+
+CoffeeDetailsCard
+
+AIBarista
+
+ChatPanel
+
+QuoteSection
+
+========================================================
+FOOTER
+========================================================
+
+Minimal.
+
+Coffee Diaries
+
+Crafted for coffee lovers.
+
+Copyright.
+
+========================================================
+ANIMATIONS
+========================================================
+
+Fade in sections.
+
+Smooth scrolling.
+
+Hover lift.
+
+Image zoom.
+
+Slide transitions.
+
+Do NOT overuse animations.
+
+Everything should feel calm.
+
+========================================================
+CODE QUALITY
+========================================================
+
+Use React.
+
+Organize components properly.
+
+Reusable layout.
+
+Responsive.
+
+Clean code.
+
+Maintain consistent spacing.
+
+Maintain consistent typography.
+
+Maintain accessibility.
+
+========================================================
+GOAL
+========================================================
+
+The website should feel like entering a quiet premium coffee café.
+
+It should prioritize aesthetics, beautiful photography, elegant typography, and a relaxing browsing experience.
+
+The AI Barista should feel like the website's friendly mascot rather than a generic chatbot.

@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Coffee Diaries"
+version = "1.0.0"
+id = "artifacts/coffee-diaries"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22405
+
+[services.development]
+run = "pnpm --filter @workspace/coffee-diaries run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/coffee-diaries", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/coffee-diaries/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22405"
+BASE_PATH = "/"
