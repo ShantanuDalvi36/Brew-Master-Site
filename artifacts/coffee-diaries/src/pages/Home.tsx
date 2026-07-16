@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { HeroSection } from '@/components/HeroSection';
 import { QuoteSection } from '@/components/QuoteSection';
 import { CoffeeCard } from '@/components/CoffeeCard';
@@ -10,10 +11,21 @@ import cappuccinoImg from '@assets/generated_images/cappuccino.jpg';
 import mochaImg from '@assets/generated_images/mocha.jpg';
 
 const imageMap: Record<string, string> = {
-  'espresso': espressoImg,
-  'latte': latteImg,
-  'cappuccino': cappuccinoImg,
-  'mocha': mochaImg,
+  espresso: espressoImg,
+  latte: latteImg,
+  cappuccino: cappuccinoImg,
+  mocha: mochaImg,
+};
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.06, ease },
+  }),
 };
 
 export default function Home() {
@@ -22,8 +34,15 @@ export default function Home() {
   return (
     <div className="min-h-[100dvh] flex flex-col">
       <HeroSection imagePath={heroImg} />
-      
-      <section className="py-24 px-6 max-w-[1280px] mx-auto w-full">
+
+      {/* Featured Pours — scrolls in once */}
+      <motion.section
+        className="py-24 px-6 max-w-[1280px] mx-auto w-full"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.6, ease }}
+      >
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary dark:text-primary-foreground mb-4">
@@ -35,16 +54,22 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Cards stagger 60ms each */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredCoffees.map(coffee => (
-            <CoffeeCard 
-              key={coffee.id} 
-              coffee={coffee} 
-              imagePath={imageMap[coffee.id]} 
-            />
+          {featuredCoffees.map((coffee, i) => (
+            <motion.div
+              key={coffee.id}
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-40px' }}
+            >
+              <CoffeeCard coffee={coffee} imagePath={imageMap[coffee.id]} />
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       <QuoteSection />
     </div>

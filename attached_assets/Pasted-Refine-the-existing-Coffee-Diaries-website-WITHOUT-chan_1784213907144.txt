@@ -1,0 +1,380 @@
+Refine the existing Coffee Diaries website WITHOUT changing the current layout, color palette, typography, spacing, or overall design.
+
+The current design direction is exactly what I want:
+- Soft Minimalism
+- Editorial
+- Premium
+- Calm
+- Warm
+- Matte Cream
+- Deep Maroon accents
+
+Your task is to make the website feel more alive using subtle animations and polished interactions.
+
+The goal is for users to feel like they're browsing a premium coffee journal rather than a static website.
+
+=========================================================
+DO NOT CHANGE
+=========================================================
+
+Do NOT redesign the pages.
+
+Do NOT change the navigation.
+
+Do NOT change the color palette.
+
+Do NOT replace components.
+
+Do NOT make the UI more modern or flashy.
+
+Only improve the user experience with tasteful animations and micro-interactions.
+
+=========================================================
+GLOBAL ANIMATION SYSTEM
+=========================================================
+
+Every animation should feel smooth and elegant.
+
+Animation duration:
+200ms - 350ms
+
+Page entrance:
+600ms
+
+Use easing:
+
+cubic-bezier(0.22, 1, 0.36, 1)
+
+Respect prefers-reduced-motion.
+
+Never use bouncy animations.
+
+=========================================================
+PAGE LOAD
+=========================================================
+
+When a page loads:
+
+Navbar fades in.
+
+Hero image fades in and scales from 0.98 to 1.
+
+Heading fades upward.
+
+Paragraph fades upward with a slight delay.
+
+Buttons fade in last.
+
+The animation should feel like opening a beautifully printed coffee journal.
+
+=========================================================
+SCROLL REVEAL
+=========================================================
+
+Every major section should animate only once when entering the viewport.
+
+Animation:
+
+Opacity
+0 -> 100%
+
+TranslateY
+20px -> 0
+
+Duration:
+600ms
+
+Cards inside a section should animate with a stagger of 60ms.
+
+=========================================================
+NAVBAR
+=========================================================
+
+Keep the existing navbar.
+
+When scrolling:
+
+Add a subtle blur.
+
+Increase background opacity slightly.
+
+Add a very soft shadow.
+
+Navigation links:
+
+On hover
+
+Display a thin maroon underline that smoothly expands from left to right.
+
+Active page should keep the underline.
+
+=========================================================
+COFFEE CARDS
+=========================================================
+
+Do not redesign the cards.
+
+Add these interactions.
+
+Hover:
+
+Card lifts upward 6px.
+
+Image slowly zooms by 4%.
+
+Shadow deepens slightly.
+
+"View Details →"
+
+moves 4px to the right.
+
+Transition duration:
+
+300ms
+
+Everything should remain elegant.
+
+=========================================================
+IMAGES
+=========================================================
+
+Images should gently fade in when entering the viewport.
+
+No dramatic zoom effects.
+
+Maintain the calm feeling.
+
+=========================================================
+BUTTONS
+=========================================================
+
+Primary buttons
+
+Hover:
+
+Background becomes slightly lighter.
+
+Scale:
+1.02
+
+Shadow slightly increases.
+
+Secondary buttons
+
+Background softly changes.
+
+Border color transitions smoothly.
+
+=========================================================
+SEARCH BAR
+=========================================================
+
+On focus
+
+Border changes to dark maroon.
+
+Soft shadow appears.
+
+Placeholder text becomes slightly lighter.
+
+Smooth transition.
+
+=========================================================
+THE BARISTA (AI CHARACTER)
+=========================================================
+
+The floating coffee mug is the mascot of the website.
+
+Keep it fixed at the bottom-right corner.
+
+Add subtle idle animations.
+
+Idle:
+
+Steam gently rises continuously.
+
+Blink every 8-12 seconds.
+
+Tiny floating motion (2px).
+
+Occasionally display a small speech bubble.
+
+Random examples:
+
+"Need a recommendation?"
+
+"Looking for something sweet?"
+
+"Fresh beans make all the difference."
+
+"Still deciding?"
+
+"What are we brewing today?"
+
+The speech bubble disappears after a few seconds.
+
+When clicked
+
+The mug performs a tiny bounce.
+
+The chat panel smoothly slides in from the right.
+
+The mug remains visually attached to the panel.
+
+Inside the chat panel:
+
+Header:
+
+☕ The Barista
+
+Placeholder welcome message:
+
+"Hello! What can I brew for you today?"
+
+The chatbot logic is NOT required.
+
+Only create the UI.
+
+=========================================================
+THEME SWITCH
+=========================================================
+
+Keep the existing light and dark themes.
+
+Improve the transition.
+
+Animate:
+
+Background
+
+Cards
+
+Buttons
+
+Borders
+
+Text
+
+Icons
+
+Duration:
+
+300ms
+
+No flashing.
+
+=========================================================
+PAGE TRANSITIONS
+=========================================================
+
+When navigating between pages
+
+Fade out current page.
+
+Fade in next page.
+
+Very subtle.
+
+Duration:
+
+300ms
+
+=========================================================
+FOOTER
+=========================================================
+
+Footer should fade in when it becomes visible.
+
+No additional animation.
+
+=========================================================
+LOADING SCREEN
+=========================================================
+
+Create a beautiful loading screen.
+
+The loading screen should appear when the application initially loads.
+
+Layout
+
+Center everything vertically.
+
+Display:
+
+Coffee Diaries
+
+Preparing your next cup...
+
+Animated coffee mug
+
+Progress indicator
+
+Random coffee fact
+
+The loading screen should automatically disappear once the application is ready.
+
+=========================================================
+LOADING ANIMATION
+=========================================================
+
+Instead of a spinner,
+
+animate the coffee mug.
+
+Ideas:
+
+Steam gently rises.
+
+Coffee inside the mug fills upward.
+
+The mug gently breathes.
+
+Keep it subtle.
+
+=========================================================
+RANDOM COFFEE FACTS
+=========================================================
+
+Create an array containing at least 40 verified coffee facts.
+
+Every page load randomly selects one.
+
+Examples:
+
+"Ethiopia is widely regarded as the birthplace of coffee."
+
+"Arabica beans generally contain less caffeine than Robusta."
+
+"Espresso is a brewing method, not a type of bean."
+
+"Freshly ground coffee loses aroma quickly."
+
+"Water quality significantly affects coffee flavor."
+
+"The crema on espresso comes from trapped gases and coffee oils."
+
+Display one random fact beneath the loading animation.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Animations should be GPU accelerated.
+
+Use transform and opacity whenever possible.
+
+Avoid layout shifts.
+
+Keep scrolling smooth.
+
+=========================================================
+FINAL GOAL
+=========================================================
+
+The website should not feel redesigned.
+
+It should simply feel much more polished, premium, interactive, and alive.
+
+The animations should be subtle enough that users notice the quality without consciously noticing the animations themselves.
+
+The only playful element on the website should be The Barista mascot, giving Coffee Diaries its unique personality while maintaining the calm, elegant aesthetic.

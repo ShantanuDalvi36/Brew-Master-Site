@@ -67,27 +67,27 @@
   --primary: 354 50% 24%;
   --primary-foreground: 36 43% 93%;
 
-  /* Secondary — Coffee Brown #6F4E37 */
-  --secondary: 31 33% 86%;     /* #E8DDD1 warm latte (secondary bg) */
+  /* Secondary — warm latte */
+  --secondary: 31 33% 86%;     /* #E8DDD1 */
   --secondary-foreground: 18 10% 15%;
 
   /* Muted */
   --muted: 31 33% 86%;
-  --muted-foreground: 25 8% 51%;  /* #8A8078 muted text */
+  --muted-foreground: 25 8% 51%;  /* #8A8078 */
 
   /* Accent — Coffee Brown */
-  --accent: 25 32% 33%;        /* #6F4E37 coffee brown */
+  --accent: 25 32% 33%;        /* #6F4E37 */
   --accent-foreground: 36 43% 93%;
 
   /* Destructive */
   --destructive: 0 37% 47%;    /* #A64B4B */
   --destructive-foreground: 36 43% 93%;
 
-  --radius: 1.25rem; /* 20px */
+  --radius: 1.25rem;
 }
 
 .dark {
-  /* Backgrounds — warm coffee-shop darkness, never pure black */
+  /* Backgrounds */
   --background: 15 14% 10%;    /* #1E1715 */
   --foreground: 36 43% 93%;    /* #F5EFE6 cream text */
   --border: 14 16% 25%;        /* #4A3B36 */
@@ -116,7 +116,7 @@
   --muted: 14 18% 15%;
   --muted-foreground: 27 14% 60%;  /* #A79A8D */
 
-  /* Accent — Warm Gold #B58A62 */
+  /* Accent */
   --accent: 32 31% 55%;
   --accent-foreground: 36 43% 93%;
 
@@ -126,9 +126,16 @@
 }
 
 @layer base {
-  * {
+  /* GPU-accelerated theme transitions on all elements */
+  *,
+  *::before,
+  *::after {
     @apply border-border;
-    transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+    transition:
+      background-color 300ms ease,
+      color 300ms ease,
+      border-color 300ms ease,
+      box-shadow 300ms ease;
   }
 
   body {
@@ -140,26 +147,50 @@
   }
 }
 
+/* ─── Keyframes ─────────────────────────────────────────────────────────── */
+
+/* Mug idle float — 2px travel, spec-compliant */
+@keyframes float-sm {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+
+/* Kept for any legacy usage */
 @keyframes float {
-  0% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
-  100% { transform: translateY(0px); }
 }
 
+/* Steam wisps */
 @keyframes float-steam {
-  0% { transform: translateY(0) scale(1); opacity: 0; }
-  50% { transform: translateY(-10px) scale(1.1); opacity: 0.6; }
-  100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+  0%   { transform: translateY(0) scale(1);   opacity: 0; }
+  40%  { transform: translateY(-8px) scale(1.08); opacity: 0.55; }
+  100% { transform: translateY(-18px) scale(1.2); opacity: 0; }
 }
 
+/* Blink — once every ~10 seconds */
+@keyframes blink-slow {
+  0%, 96%, 100% { transform: scaleY(1); }
+  98%            { transform: scaleY(0.08); }
+}
+
+/* Legacy blink (4s cycle) */
 @keyframes blink {
   0%, 96%, 98% { transform: scaleY(1); }
-  97% { transform: scaleY(0.1); }
+  97%          { transform: scaleY(0.1); }
 }
 
+/* Mug click bounce */
 @keyframes bounce-sm {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  45%       { transform: translateY(-9px); }
+  70%       { transform: translateY(-3px); }
+}
+
+/* ─── Animation utility classes ─────────────────────────────────────────── */
+
+.animate-float-sm {
+  animation: float-sm 3.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .animate-float {
@@ -167,18 +198,36 @@
 }
 
 .animate-steam {
-  animation: float-steam 3s ease-out infinite;
+  animation: float-steam 2.8s ease-out infinite;
 }
 
 .animate-steam-delay {
-  animation: float-steam 3s ease-out infinite 1.5s;
+  animation: float-steam 2.8s ease-out infinite 1.4s;
 }
 
+/* Slow blink — ~10s cycle */
+.animate-blink-slow {
+  transform-origin: center;
+  animation: blink-slow 10s infinite;
+}
+
+/* Legacy */
 .animate-blink {
   transform-origin: center;
   animation: blink 4s infinite;
 }
 
 .animate-bounce-sm {
-  animation: bounce-sm 0.4s ease-in-out;
+  animation: bounce-sm 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
