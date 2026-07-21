@@ -1,0 +1,159 @@
+Update the existing Coffee Diaries website by building the **Explore page** using the current Soft Minimalist design system.
+
+Keep the existing:
+
+* Matte cream background
+* Deep maroon accent
+* Warm brown supporting colors
+* Playfair Display headings
+* Inter body text
+* Rounded corners
+* Subtle shadows
+* Slow smooth animations
+
+Do NOT redesign the website. Only build the Explore page and refine the coffee card component.
+
+## Explore Page Layout
+
+Create these sections in order:
+
+1. Search bar
+2. Featured Coffee (large hero card)
+3. Popular
+4. Hot Coffee
+5. Cold Coffee
+6. Dessert Coffee
+
+Use generous vertical spacing (96–120px between sections).
+
+## Search Bar
+
+* Full width
+* Height: 56px
+* Background: soft ivory (#FCF8F3)
+* Border: #D9C9BA
+* Radius: 18px
+* Left search icon
+* Placeholder: “Search coffees…”
+
+Focus state:
+
+* Border changes to dark maroon (#5A1E24)
+* Soft shadow appears
+* Transition duration: 350ms
+
+## Coffee Card Component
+
+Create a reusable `CoffeeCard` component.
+
+Card:
+
+* Background: #FCF8F3
+* Border: 1px solid #D9C9BA
+* Border radius: 22px
+* Padding: 16–18px
+* Soft shadow: 0 6px 24px rgba(40,30,20,0.08)
+* Overflow hidden
+
+Image:
+
+* Aspect ratio: 4:5
+* Large immersive crop
+* Rounded corners: 18–20px
+* Warm editorial color grading
+
+Content:
+
+* Small category badge (Classic / Strong / Cold Brew / Dessert)
+* Coffee name
+* One-line description
+* Origin (country)
+* Strength indicator using coffee beans (●●●●○)
+* CTA: “Discover →”
+
+## Hover / Interaction
+
+Current animations are too fast.
+
+Use:
+transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+box-shadow 450ms cubic-bezier(0.22, 1, 0.36, 1),
+filter 450ms cubic-bezier(0.22, 1, 0.36, 1);
+
+Hover:
+
+* translateY(-5px)
+* image scale(1.03)
+* slightly deeper shadow
+* CTA arrow moves 4px right
+
+No bounce.
+No elastic motion.
+No snapping.
+
+## Featured Coffee Card
+
+Create one large hero card at the top.
+
+* Full width
+* Large coffee image (16:10)
+* Badge: “Today’s Pick”
+* Coffee name: Cappuccino
+* Short editorial description
+* Button: “View Recipe”
+
+This card should be visually larger than all other cards.
+
+## Grid
+
+Desktop:
+
+* 3 columns
+
+Tablet:
+
+* 2 columns
+
+Mobile:
+
+* 1 column
+
+Gap: 24px.
+
+## Scroll Reveal
+
+Each section should fade in and move upward.
+
+Animation:
+
+* opacity: 0 → 1
+* translateY: 20px → 0
+* duration: 700ms
+* easing: cubic-bezier(0.22, 1, 0.36, 1)
+
+Cards inside a section should be staggered by 80ms.
+
+## Coffee Data
+
+Populate with realistic coffees:
+
+* Espresso
+* Cappuccino
+* Latte
+* Flat White
+* Americano
+* Mocha
+* Macchiato
+* Cortado
+* Cold Brew
+* Iced Latte
+* Vietnamese Iced Coffee
+* Affogato
+
+Use high-quality warm coffee photography for each card.
+
+## Goal
+
+The Explore page should feel like browsing a premium coffee magazine or luxury café menu.
+
+Users should naturally want to keep scrolling through the coffee cards.
