@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRoute, Link } from 'wouter';
-import { ArrowLeft, Coffee, Droplets, Zap, Globe } from 'lucide-react';
+import { ArrowLeft, Coffee, Droplets, Zap, Globe, X, Check } from 'lucide-react';
 import { coffees } from '@/data/coffees';
+import { addExploredCoffee, createJournalEntry, loadJournalEntries } from '@/services/diaryStorage';
+import { getCountryForCoffee } from '@/data/atlas';
 
 import espressoImg from '@assets/generated_images/espresso.jpg';
 import latteImg from '@assets/generated_images/latte.jpg';
@@ -12,6 +14,9 @@ import affogatoImg from '@assets/generated_images/affogato.jpg';
 import mochaImg from '@assets/generated_images/mocha.jpg';
 import flatWhiteImg from '@assets/generated_images/flat-white.jpg';
 import americanoImg from '@assets/generated_images/americano.jpg';
+import macchiatoImg from '@assets/generated_images/macchiato.jpg';
+import cortadoImg from '@assets/generated_images/cortado.jpg';
+import vietnameseImg from '@assets/generated_images/vietnamese-iced-coffee.jpg';
 
 const imageMap: Record<string, string> = {
   'espresso': espressoImg,
@@ -23,15 +28,25 @@ const imageMap: Record<string, string> = {
   'mocha': mochaImg,
   'flat-white': flatWhiteImg,
   'americano': americanoImg,
+  'macchiato': macchiatoImg,
+  'cortado': cortadoImg,
+  'vietnamese-iced-coffee': vietnameseImg,
 };
 
 export default function CoffeeDetail() {
   const [, params] = useRoute('/coffee/:id');
   const id = params?.id;
   const coffee = coffees.find(c => c.id === id);
+  const [journalOpen, setJournalOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [notes, setNotes] = useState('');
+  const [tastingDate, setTastingDate] = useState(new Date().toISOString().slice(0, 10));
+  const [confirmation, setConfirmation] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setSaved(Boolean(id && loadJournalEntries().some(entry => entry.coffeeId === id)));
   }, [id]);
 
   if (!coffee) {
@@ -48,6 +63,7 @@ export default function CoffeeDetail() {
 
   const imageSrc = imageMap[coffee.id];
   const similarCoffees = coffees.filter(c => coffee.similar.includes(c.id));
+  const country = getCountryForCoffee(coffee.id);
 
   return (
     <div className="min-h-[100dvh] pb-24">
@@ -67,6 +83,7 @@ export default function CoffeeDetail() {
           <Link href="/explore" className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
             <ArrowLeft size={20} className="mr-2" />
             Back to Explore
+            
           </Link>
           <div className="inline-block px-3 py-1 bg-primary/80 backdrop-blur-sm text-white text-sm font-medium rounded-full mb-4">
             {coffee.category}
@@ -77,6 +94,14 @@ export default function CoffeeDetail() {
           <p className="text-xl text-white/90 max-w-2xl font-light drop-shadow">
             {coffee.description}
           </p>
+           <button
+             type="button"
+             onClick={() => setJournalOpen(true)}
+             className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/15 px-5 py-3 text-sm text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+           >
+             {saved ? <Check size={16} /> : null}
+             {saved ? 'Add another tasting' : 'Add to Journal'}
+           </button>
         </div>
       </div>
 
@@ -204,6 +229,69 @@ export default function CoffeeDetail() {
 
         </div>
       </div>
+      {journalOpen && (
+        <div className="fixed inset-0 z-[70] flex items-end justify-center bg-primary/20 p-0 backdrop-blur-sm sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="journal-dialog-title">
+          <form
+            onSubmit={event => {
+              event.preventDefault();
+              createJournalEntry({
+                coffeeId: coffee.id,
+                coffeeName: coffee.name,
+                country: country?.name || coffee.origin,
+                countrySlug: country?.slug,
+                rating,
+                notes,
+                brewMethod: coffee.name,
+                favorite: false,
+                date: new Date(`${tastingDate}T12:00:00`).toISOString(),
+              });
+              addExploredCoffee(coffee.id);
+              setSaved(true);
+              setJournalOpen(false);
+              setNotes('');
+              setConfirmation('Added to your journal and passport progress.');
+              setConfirmation('Added to your journal and passport progress.');
+            }}
+            className="w-full max-w-xl rounded-t-[2rem] border border-border bg-card p-6 shadow-[0_24px_80px_rgba(52,28,22,.22)] sm:rounded-[2rem] sm:p-8"
+          >
+            <div className="mb-7 flex items-start justify-between">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.22em] text-accent">Personal tasting note</p>
+                <h2 id="journal-dialog-title" className="mt-2 font-serif text-3xl text-primary dark:text-primary-foreground">Add to your journal</h2>
+              </div>
+              <button type="button" onClick={() => setJournalOpen(false)} aria-label="Close journal form" className="rounded-full p-2 text-muted-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><X size={18} /></button>
+            </div>
+            <div className="rounded-2xl bg-secondary/40 p-4">
+              <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">Coffee</p>
+              <p className="mt-1 font-serif text-xl text-foreground">{coffee.name}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{country?.name || coffee.origin}</p>
+            </div>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              <label className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Rating
+                <select value={rating} onChange={event => setRating(Number(event.target.value))} className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm normal-case tracking-normal text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                  {[5, 4, 3, 2, 1].map(value => <option key={value} value={value}>{value} / 5</option>)}
+                </select>
+              </label>
+              <label className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Date
+                <input type="date" value={tastingDate} onChange={event => setTastingDate(event.target.value)} className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm normal-case tracking-normal text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+              <label className="text-xs uppercase tracking-[0.14em] text-muted-foreground sm:col-span-2">Notes
+                <textarea value={notes} onChange={event => setNotes(event.target.value)} rows={4} placeholder="What stayed with you?" className="mt-2 w-full resize-none rounded-xl border border-border bg-background px-3 py-3 text-sm normal-case tracking-normal text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+            </div>
+            <div className="mt-7 flex justify-end gap-3">
+              <button type="button" onClick={() => setJournalOpen(false)} className="rounded-full px-4 py-2.5 text-sm text-muted-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Cancel</button>
+              <button type="submit" className="rounded-full bg-primary px-5 py-2.5 text-sm text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Save to Journal</button>
+            </div>
+          </form>
+        </div>
+      )}
+      {confirmation && (
+        <div className="fixed bottom-6 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-accent/30 bg-card px-5 py-3 text-sm text-accent shadow-[0_10px_35px_rgba(52,28,22,.16)]" role="status">
+          {confirmation}
+          <button type="button" onClick={() => setConfirmation('')} className="ml-3 text-muted-foreground underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Dismiss</button>
+        </div>
+      )}
     </div>
   );
 }

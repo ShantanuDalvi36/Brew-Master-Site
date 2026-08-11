@@ -1,0 +1,334 @@
+Create a new page called "Coffee Around the World" for the Coffee Diaries website.
+
+IMPORTANT
+
+This page must follow the exact same design language as the rest of the website.
+
+Do NOT redesign the website.
+
+Use the existing:
+
+- Soft Minimalism
+- Editorial layout
+- Matte cream background
+- Deep maroon accent
+- Warm brown secondary colors
+- Premium typography
+- Smooth subtle animations
+
+The page should feel like a luxury travel journal dedicated to coffee.
+
+=====================================================
+
+PAGE LAYOUT
+
+Navbar
+
+↓
+
+Hero Section
+
+↓
+
+Interactive World Map
+
+↓
+
+Featured Countries
+
+↓
+
+Coffee Regions Grid
+
+↓
+
+Fun Facts Section
+
+↓
+
+Footer
+
+=====================================================
+
+HERO SECTION
+
+Large heading
+
+Coffee Around the World
+
+Subtitle
+
+Discover the stories, traditions, and signature brews that define coffee culture across the globe.
+
+Use a beautiful full-width hero image of coffee plantations or coffee beans.
+
+Add a subtle fade-in animation.
+
+=====================================================
+
+INTERACTIVE WORLD MAP
+
+Place a large responsive world map in the center.
+
+Highlighted countries should include:
+
+• Ethiopia
+• Italy
+• Brazil
+• Colombia
+• Vietnam
+• Turkey
+• Japan
+• Australia
+• France
+• Mexico
+
+Hovering a country should display:
+
+Country Name
+
+Number of Coffees Available
+
+Example:
+
+Italy
+
+5 Coffees Available
+
+Clicking a country opens its country detail page.
+
+The selected country should animate smoothly with a soft highlight.
+
+Do not use bright colours.
+
+Highlight using the existing maroon accent.
+
+=====================================================
+
+FEATURED COUNTRIES
+
+Below the map create elegant country cards.
+
+Each card contains:
+
+Large country image
+
+Country flag
+
+Country name
+
+Short description
+
+Number of coffees
+
+Popular coffee
+
+Explore →
+
+Cards should match the existing coffee card style.
+
+Hover
+
+Lift 5px
+
+Image zoom 3%
+
+Smooth shadow transition
+
+=====================================================
+
+COUNTRY DETAIL PAGE
+
+Each country should have its own page.
+
+Layout
+
+Large Hero Image
+
+↓
+
+Country Overview
+
+↓
+
+Coffee History
+
+↓
+
+Popular Coffees
+
+↓
+
+Coffee Culture
+
+↓
+
+Gallery
+
+↓
+
+Interesting Facts
+
+↓
+
+Explore Coffees
+
+=====================================================
+
+COUNTRY OVERVIEW
+
+Display
+
+Country
+
+Capital
+
+Coffee Production
+
+Known For
+
+Coffee Style
+
+Example
+
+Italy
+
+Known for espresso culture and traditional cafés.
+
+=====================================================
+
+POPULAR COFFEES
+
+Display beautiful coffee cards.
+
+Examples
+
+Italy
+
+Espresso
+
+Cappuccino
+
+Latte
+
+Affogato
+
+Macchiato
+
+Each card links to its Coffee Detail page.
+
+=====================================================
+
+COFFEE CULTURE
+
+A beautifully formatted editorial section describing coffee traditions.
+
+Avoid long paragraphs.
+
+Use pull quotes where appropriate.
+
+=====================================================
+
+PHOTO GALLERY
+
+Responsive masonry grid.
+
+Use premium coffee photography.
+
+Images slightly enlarge on hover.
+
+=====================================================
+
+FUN FACTS
+
+Display 3–5 interesting coffee facts for the country.
+
+Example
+
+"Ethiopia is widely regarded as the birthplace of coffee."
+
+Each fact appears inside a premium information card.
+
+=====================================================
+
+RELATED COUNTRIES
+
+At the bottom display
+
+You may also enjoy
+
+Example
+
+Brazil
+
+Colombia
+
+Vietnam
+
+Displayed as cards.
+
+=====================================================
+
+ANIMATIONS
+
+Follow the website motion system.
+
+Page fade-in
+
+700ms
+
+Cards reveal with stagger
+
+80ms
+
+Hover animations
+
+450ms
+
+No bounce animations.
+
+No flashy effects.
+
+Everything should feel calm and elegant.
+
+=====================================================
+
+RESPONSIVE DESIGN
+
+Desktop
+
+Large interactive map.
+
+Tablet
+
+Responsive map.
+
+Mobile
+
+Scrollable layout with optimized map and cards.
+
+=====================================================
+
+FUTURE READY
+
+Structure the code so more countries can easily be added later.
+
+Country data should come from reusable JSON or TypeScript objects rather than hardcoded UI.
+
+Each country should support:
+
+- Name
+- Flag
+- Hero Image
+- Description
+- Coffee History
+- Popular Coffees
+- Fun Facts
+- Gallery
+- Coordinates
+
+=====================================================
+
+FINAL GOAL
+
+This page should feel like exploring coffee cultures around the world through a beautifully designed travel journal rather than browsing a standard information website.

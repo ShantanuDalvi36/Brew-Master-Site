@@ -1,0 +1,670 @@
+Add three new pages to the existing Coffee Diaries website:
+
+1. Coffee Journal
+2. Coffee Around the World
+3. Coffee Passport
+
+IMPORTANT:
+Do NOT redesign or replace the existing website.
+
+Preserve the current:
+- Soft Minimalism design
+- Matte cream / dark maroon color palette
+- Typography
+- Navbar
+- Footer
+- Coffee card design
+- AI Barista
+- Dark/light mode
+- Existing animations and spacing
+- Existing pages and functionality
+
+The new pages should feel like they have always been part of the same website.
+
+==================================================
+1. NAVIGATION
+==================================================
+
+Add the following navigation items to the existing navbar:
+
+Home
+Explore
+Coffee Atlas
+My Journal
+Passport
+
+On smaller screens, place them appropriately inside the existing mobile navigation.
+
+Do not overcrowd the navbar.
+
+Use:
+"Coffee Atlas" for Coffee Around the World
+"My Journal" for Coffee Journal
+"Passport" for Coffee Passport
+
+==================================================
+2. COFFEE JOURNAL
+==================================================
+
+Create a page:
+
+/journal
+
+Purpose:
+Allow users to maintain a personal record of coffees they have explored or tried.
+
+Hero section:
+
+My Coffee Journal
+
+"Keep track of the coffees you've discovered, loved, and want to try again."
+
+Below the hero, display summary statistics:
+
+Coffees Tried
+Countries Explored
+Average Rating
+Favorite Coffee
+
+Use the existing soft statistic/card style.
+
+==================================================
+JOURNAL ENTRIES
+==================================================
+
+Display saved coffees as journal cards.
+
+Each entry should contain:
+
+- Coffee image
+- Coffee name
+- Country of origin
+- User rating
+- Date added
+- User notes
+- View Coffee button
+
+Example:
+
+Cappuccino
+Italy
+
+★★★★★
+
+"Rich and creamy. Would definitely order again."
+
+August 10, 2026
+
+View Coffee →
+
+==================================================
+ADD TO JOURNAL
+==================================================
+
+On the existing Coffee Detail page, add:
+
+"Add to Journal"
+
+When clicked, open a small elegant modal.
+
+Fields:
+
+Coffee
+Rating
+Date
+Notes
+
+Buttons:
+
+Cancel
+Save to Journal
+
+After saving:
+
+- Add the entry to the Journal
+- Update journal statistics
+- Show a subtle success notification
+
+==================================================
+JOURNAL MANAGEMENT
+==================================================
+
+Allow users to:
+
+- Add entries
+- Edit entries
+- Delete entries
+- Change ratings
+- Update notes
+
+Add simple filtering:
+
+All
+Favorites
+Highest Rated
+Recently Added
+
+Keep the interface minimal.
+
+==================================================
+EMPTY JOURNAL
+==================================================
+
+If there are no journal entries, do not show an empty grid.
+
+Instead display:
+
+A subtle coffee illustration or mug.
+
+"Your coffee story starts here."
+
+"Explore a coffee and add your first entry to your journal."
+
+Button:
+
+Explore Coffees →
+
+==================================================
+3. COFFEE AROUND THE WORLD / COFFEE ATLAS
+==================================================
+
+Create:
+
+/atlas
+
+Page title:
+
+Coffee Atlas
+
+Subtitle:
+
+"Explore the coffees, traditions, and stories that connect coffee cultures around the world."
+
+This page should feel like a premium coffee travel journal.
+
+==================================================
+INTERACTIVE WORLD MAP
+==================================================
+
+Create a large responsive interactive world map.
+
+Initially include these countries:
+
+Ethiopia
+Italy
+Brazil
+Colombia
+Vietnam
+Turkey
+Japan
+France
+Australia
+Mexico
+
+Use the existing dark maroon as the primary map highlight.
+
+Do NOT use bright neon colors.
+
+Hovering over a country should show a small tooltip:
+
+Country Name
+Number of Coffees
+
+Example:
+
+Italy
+5 coffees
+
+Clicking a country should open:
+
+/atlas/italy
+
+The architecture must make it easy to add more countries later.
+
+Country information should be stored as structured data rather than being hardcoded directly into components.
+
+==================================================
+COUNTRY CARDS
+==================================================
+
+Below the map create:
+
+Featured Coffee Cultures
+
+Each country card contains:
+
+- Country image
+- Country name
+- Short description
+- Number of coffees
+- Explore → button
+
+Use the existing coffee-card visual language.
+
+Hover animation:
+
+- translateY(-5px)
+- image scale(1.03)
+- subtle shadow increase
+- 450ms transition
+- cubic-bezier(0.22, 1, 0.36, 1)
+
+==================================================
+COUNTRY DETAIL PAGE
+==================================================
+
+Create a reusable country detail template:
+
+/atlas/:country
+
+Structure:
+
+Hero image
+
+Country name
+
+Short introduction
+
+↓
+
+Coffee Culture
+
+↓
+
+Coffee History
+
+↓
+
+Popular Coffees
+
+↓
+
+Gallery
+
+↓
+
+Fun Facts
+
+↓
+
+Related Countries
+
+Popular coffees should use the existing CoffeeCard component.
+
+Each coffee card should link to its existing Coffee Detail page.
+
+==================================================
+COUNTRY DATA
+==================================================
+
+Create a reusable country data structure containing:
+
+- id
+- name
+- flag
+- description
+- heroImage
+- history
+- coffeeCulture
+- coordinates
+- popularCoffeeIds
+- funFacts
+- galleryImages
+
+Do not duplicate country information across components.
+
+==================================================
+4. COFFEE PASSPORT
+==================================================
+
+Create:
+
+/passport
+
+Purpose:
+
+Turn coffee exploration into a simple collection and achievement system.
+
+Hero:
+
+Coffee Passport
+
+"Every coffee is a new place to discover."
+
+Display overall progress:
+
+Countries Visited
+Coffees Explored
+Continents Explored
+Passport Completion %
+
+==================================================
+PASSPORT MAP / COLLECTION
+==================================================
+
+Display countries as passport-style stamps.
+
+Unlocked country:
+
+Large decorative stamp containing:
+
+Country flag
+Country name
+VISITED
+
+Locked country:
+
+Muted appearance
+
+Lock icon
+
+"Not yet explored"
+
+Do not make locked cards overly dark or visually harsh.
+
+==================================================
+UNLOCK LOGIC
+==================================================
+
+When a user explores a coffee:
+
+1. Identify the coffee's country.
+2. Check whether that country has already been unlocked.
+3. If not unlocked:
+   - Add country to Passport
+   - Display a subtle "Passport Stamp Added" notification
+   - Animate the new stamp
+4. Update passport progress.
+
+For now, this can use localStorage if authentication/backend does not yet exist.
+
+Structure the code so it can later be connected to a database.
+
+==================================================
+ACHIEVEMENTS
+==================================================
+
+Add an Achievements section.
+
+Initial achievements:
+
+First Sip
+- Explore your first coffee.
+
+Coffee Explorer
+- Explore 5 coffees.
+
+Coffee Collector
+- Explore 10 coffees.
+
+World Traveler
+- Explore coffees from 5 countries.
+
+Global Coffee Explorer
+- Explore coffees from 10 countries.
+
+Italian Coffee Journey
+- Explore 3 Italian coffees.
+
+Achievements should unlock automatically based on user activity.
+
+Locked achievements should appear muted.
+
+Unlocked achievements should use the existing maroon accent.
+
+==================================================
+PASSPORT PROGRESS
+==================================================
+
+Add a clean progress section:
+
+Your Coffee Journey
+
+Countries
+██████░░░░ 6 / 10
+
+Coffees
+████████░░ 18 / 25
+
+Do not use overly bright progress bars.
+
+Use the existing maroon and cream palette.
+
+==================================================
+5. CONNECT THE THREE FEATURES
+==================================================
+
+These pages must NOT behave like isolated features.
+
+Connect them through shared coffee and country data.
+
+Example flow:
+
+User opens:
+
+Coffee Detail
+        ↓
+Adds Cappuccino to Journal
+        ↓
+Cappuccino belongs to Italy
+        ↓
+Italy is added to Passport
+        ↓
+Passport progress updates
+        ↓
+Journal statistics update
+
+Another flow:
+
+User opens:
+
+Coffee Atlas
+        ↓
+Selects Italy
+        ↓
+Views Italian coffees
+        ↓
+Opens Cappuccino
+        ↓
+Adds it to Journal
+        ↓
+Passport updates
+
+==================================================
+6. DATA ARCHITECTURE
+==================================================
+
+Create reusable data structures for:
+
+Coffee
+Country
+JournalEntry
+PassportProgress
+Achievement
+
+Example conceptual structure:
+
+Coffee:
+- id
+- name
+- countryId
+- category
+- image
+- description
+- recipe
+- strength
+
+Country:
+- id
+- name
+- flag
+- description
+- coordinates
+- popularCoffeeIds
+
+JournalEntry:
+- id
+- coffeeId
+- rating
+- notes
+- date
+
+Passport:
+- user/c local identifier
+- visitedCountryIds
+- exploredCoffeeIds
+- unlockedAchievementIds
+
+Do not duplicate coffee or country information.
+
+==================================================
+7. STORAGE
+==================================================
+
+If the project does not currently have authentication/database functionality:
+
+Use localStorage for:
+
+- Journal entries
+- Passport progress
+- Favorites
+- Achievements
+
+Create a clean storage/service layer so that localStorage can later be replaced by Supabase/PostgreSQL without rewriting the UI.
+
+Do NOT add a complicated backend yet.
+
+==================================================
+8. ANIMATIONS
+==================================================
+
+Follow the existing slow motion system.
+
+Do NOT introduce fast animations.
+
+Page entrance:
+700ms
+
+Cards:
+450ms
+
+Scroll reveal:
+700ms
+
+Stagger:
+80ms
+
+Passport stamp:
+800ms
+
+Use:
+
+cubic-bezier(0.22, 1, 0.36, 1)
+
+Avoid:
+
+- Bounce
+- Elastic effects
+- Fast scaling
+- Excessive rotations
+- Flashy transitions
+
+The Passport stamp can have slightly more personality than normal cards, but it should still feel refined.
+
+==================================================
+9. RESPONSIVENESS
+==================================================
+
+All three pages must work on:
+
+Desktop
+Tablet
+Mobile
+
+Desktop:
+- Large map
+- Multi-column cards
+- Spacious layout
+
+Tablet:
+- Reduced columns
+- Responsive map
+
+Mobile:
+- Single-column cards
+- Horizontally scrollable passport stamps where appropriate
+- Map must remain usable
+- Journal cards should stack cleanly
+
+==================================================
+10. ACCESSIBILITY
+==================================================
+
+Ensure:
+
+- Keyboard navigation
+- Visible focus states
+- Semantic HTML
+- Accessible buttons
+- Accessible map interactions where possible
+- Respect prefers-reduced-motion
+
+Do not rely solely on color to communicate locked/unlocked states.
+
+==================================================
+11. CODE QUALITY
+==================================================
+
+Use reusable components.
+
+Suggested components:
+
+CoffeeJournal
+JournalEntryCard
+JournalStats
+JournalModal
+
+CoffeeAtlas
+WorldMap
+CountryCard
+CountryDetail
+CountryGallery
+
+CoffeePassport
+PassportStamp
+PassportProgress
+AchievementCard
+
+Keep data separate from presentation.
+
+Do not duplicate existing CoffeeCard functionality.
+
+Reuse existing components whenever possible.
+
+==================================================
+12. FINAL RESULT
+==================================================
+
+The three new pages should make Coffee Diaries feel like a connected coffee journey:
+
+DISCOVER
+    ↓
+EXPLORE
+    ↓
+LEARN
+    ↓
+RECORD
+    ↓
+COLLECT
+    ↓
+DISCOVER MORE
+
+Coffee Atlas helps users discover coffee cultures.
+
+Coffee Journal lets users record their personal experiences.
+
+Coffee Passport turns exploration into a visual collection.
+
+The three features should share the same coffee and country data and work together naturally.
+
+Do not modify existing features unless required to connect these new pages.

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Send } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -32,10 +32,12 @@ export function AIBarista() {
   const eyeLeftRef = useRef<HTMLDivElement>(null);
   const eyeRightRef = useRef<HTMLDivElement>(null);
 
-  const [messages, setMessages] = useState<{ id: number; text: string; sender: 'user' | 'barista' }[]>([
-    { id: 1, text: "Hello! What can I brew for you today?", sender: 'barista' },
+  const [messages, setMessages] = useState<
+    { id: number; text: string; sender: "user" | "barista" }[]
+  >([
+    { id: 1, text: "Hello! What can I brew for you today?", sender: "barista" },
   ]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Random blink every 10–15 seconds — adds a class, removes it after animation ends
@@ -43,11 +45,15 @@ export function AIBarista() {
     const scheduleBlink = () => {
       const delay = 10000 + Math.random() * 5000; // 10–15s
       blinkTimerRef.current = setTimeout(() => {
-        [eyeLeftRef, eyeRightRef].forEach(ref => {
-          ref.current?.classList.add('animate-blink-once');
-          ref.current?.addEventListener('animationend', () => {
-            ref.current?.classList.remove('animate-blink-once');
-          }, { once: true });
+        [eyeLeftRef, eyeRightRef].forEach((ref) => {
+          ref.current?.classList.add("animate-blink-once");
+          ref.current?.addEventListener(
+            "animationend",
+            () => {
+              ref.current?.classList.remove("animate-blink-once");
+            },
+            { once: true },
+          );
         });
         scheduleBlink();
       }, delay);
@@ -67,7 +73,8 @@ export function AIBarista() {
     }
 
     const showBubble = () => {
-      const msg = promptMessages[Math.floor(Math.random() * promptMessages.length)];
+      const msg =
+        promptMessages[Math.floor(Math.random() * promptMessages.length)];
       setBubbleText(msg);
       setTimeout(() => setBubbleText(null), 4500);
     };
@@ -86,7 +93,7 @@ export function AIBarista() {
 
   // Scroll to bottom of chat
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleMugClick = () => {
@@ -104,13 +111,21 @@ export function AIBarista() {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
-    const newMsg = { id: Date.now(), text: inputValue, sender: 'user' as const };
-    setMessages(prev => [...prev, newMsg]);
-    setInputValue('');
+    const newMsg = {
+      id: Date.now(),
+      text: inputValue,
+      sender: "user" as const,
+    };
+    setMessages((prev) => [...prev, newMsg]);
+    setInputValue("");
 
     setTimeout(() => {
-      const response = cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
-      setMessages(prev => [...prev, { id: Date.now(), text: response, sender: 'barista' }]);
+      const response =
+        cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), text: response, sender: "barista" },
+      ]);
     }, 1000);
   };
 
@@ -136,11 +151,11 @@ export function AIBarista() {
         <button
           onClick={handleMugClick}
           className={cn(
-            'relative w-16 h-16 cursor-pointer focus:outline-none',
-            isTapping ? 'animate-mug-tap' : 'animate-float-sm',
-            isOpen && 'opacity-0 pointer-events-none',
+            "relative w-16 h-16 cursor-pointer focus:outline-none",
+            isTapping ? "animate-mug-tap" : "animate-float-sm",
+            isOpen && "opacity-0 pointer-events-none",
           )}
-          style={{ transition: 'opacity 400ms cubic-bezier(0.22,1,0.36,1)' }}
+          style={{ transition: "opacity 400ms cubic-bezier(0.22,1,0.36,1)" }}
           aria-label="Open AI Barista Chat"
         >
           {/* Steam — rises continuously, slow */}
@@ -149,7 +164,7 @@ export function AIBarista() {
             <div className="w-[3px] h-5 bg-[#F5EFE6]/65 dark:bg-[#DCCFC2]/45 rounded-full animate-steam-delay" />
             <div
               className="w-[3px] h-3 bg-[#F5EFE6]/65 dark:bg-[#DCCFC2]/45 rounded-full animate-steam"
-              style={{ animationDelay: '0.6s' }}
+              style={{ animationDelay: "0.6s" }}
             />
           </div>
 
@@ -162,12 +177,12 @@ export function AIBarista() {
                 <div
                   ref={eyeLeftRef}
                   className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full"
-                  style={{ transformOrigin: 'center' }}
+                  style={{ transformOrigin: "center" }}
                 />
                 <div
                   ref={eyeRightRef}
                   className="w-1.5 h-1.5 bg-[#2B2623] dark:bg-[#F5EFE6] rounded-full"
-                  style={{ transformOrigin: 'center', animationDelay: '0.04s' }}
+                  style={{ transformOrigin: "center", animationDelay: "0.04s" }}
                 />
               </div>
               <div className="w-4 h-2 border-b-2 border-[#2B2623] dark:border-[#F5EFE6] rounded-full" />
@@ -192,37 +207,47 @@ export function AIBarista() {
             />
 
             <motion.div
-              initial={{ x: '100%', opacity: 0.6 }}
+              initial={{ x: "100%", opacity: 0.6 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: '100%', opacity: 0.6 }}
+              exit={{ x: "100%", opacity: 0.6 }}
               transition={{ duration: 0.65, ease: EASE }}
               className="fixed top-0 right-0 bottom-0 w-full md:w-[380px] bg-card border-l border-border shadow-2xl z-50 flex flex-col"
             >
               <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/30">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">☕</span>
-                  <h3 className="font-serif font-semibold text-lg text-foreground">The Barista</h3>
+                  <h3 className="font-serif font-semibold text-lg text-foreground">
+                    The Barista
+                  </h3>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="p-2 text-muted-foreground rounded-full"
-                  style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1), background-color 350ms cubic-bezier(0.22,1,0.36,1)' }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--foreground))')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
+                  style={{
+                    transition:
+                      "color 350ms cubic-bezier(0.22,1,0.36,1), background-color 350ms cubic-bezier(0.22,1,0.36,1)",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.color =
+                      "hsl(var(--foreground))")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.color = "")
+                  }
                 >
                   <X size={20} />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-                {messages.map(msg => (
+                {messages.map((msg) => (
                   <div
                     key={msg.id}
                     className={cn(
-                      'max-w-[80%] rounded-2xl px-4 py-2 text-sm',
-                      msg.sender === 'user'
-                        ? 'bg-primary text-primary-foreground self-end rounded-br-sm'
-                        : 'bg-secondary text-foreground self-start rounded-bl-sm',
+                      "max-w-[80%] rounded-2xl px-4 py-2 text-sm",
+                      msg.sender === "user"
+                        ? "bg-primary text-primary-foreground self-end rounded-br-sm"
+                        : "bg-secondary text-foreground self-start rounded-bl-sm",
                     )}
                   >
                     {msg.text}
@@ -236,11 +261,12 @@ export function AIBarista() {
                   <input
                     type="text"
                     value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
+                    onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Ask about a coffee..."
                     className="flex-1 bg-secondary border border-border rounded-full px-4 py-2 text-sm focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.10)]"
                     style={{
-                      transition: 'border-color 350ms cubic-bezier(0.22,1,0.36,1), box-shadow 350ms cubic-bezier(0.22,1,0.36,1)',
+                      transition:
+                        "border-color 350ms cubic-bezier(0.22,1,0.36,1), box-shadow 350ms cubic-bezier(0.22,1,0.36,1)",
                     }}
                   />
                   <button
@@ -248,13 +274,17 @@ export function AIBarista() {
                     disabled={!inputValue.trim()}
                     className="p-2 bg-primary text-primary-foreground rounded-full disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
-                      transition: 'background-color 300ms cubic-bezier(0.22,1,0.36,1), transform 300ms cubic-bezier(0.22,1,0.36,1)',
+                      transition:
+                        "background-color 300ms cubic-bezier(0.22,1,0.36,1), transform 300ms cubic-bezier(0.22,1,0.36,1)",
                     }}
-                    onMouseEnter={e => {
-                      if (inputValue.trim()) (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+                    onMouseEnter={(e) => {
+                      if (inputValue.trim())
+                        (e.currentTarget as HTMLElement).style.transform =
+                          "scale(1.05)";
                     }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.transform =
+                        "scale(1)";
                     }}
                   >
                     <Send size={18} />

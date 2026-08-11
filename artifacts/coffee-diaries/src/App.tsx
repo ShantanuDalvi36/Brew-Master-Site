@@ -11,6 +11,10 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import Home from '@/pages/Home';
 import Explore from '@/pages/Explore';
 import CoffeeDetail from '@/pages/CoffeeDetail';
+import Journal from '@/pages/Journal';
+import Atlas from '@/pages/Atlas';
+import AtlasCountry from '@/pages/AtlasCountry';
+import Passport from '@/pages/Passport';
 
 // Luxury easing — used for every transition
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -42,6 +46,10 @@ function Router() {
             <Route path="/" component={Home} />
             <Route path="/explore" component={Explore} />
             <Route path="/coffee/:id" component={CoffeeDetail} />
+            <Route path="/journal" component={Journal} />
+            <Route path="/atlas" component={Atlas} />
+            <Route path="/atlas/:country" component={AtlasCountry} />
+            <Route path="/passport" component={Passport} />
             <Route component={NotFound} />
           </Switch>
         </PageTransitionWrapper>

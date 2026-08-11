@@ -1,0 +1,52 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useRoute } from 'wouter';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight, Check, Coffee, Mountain, Sun, Sparkles } from 'lucide-react';
+import { AtlasMap } from '@/components/AtlasMap';
+import { atlasCountries, getAtlasCountry, getCountryCoffees } from '@/data/atlas';
+import { CoffeeCard } from '@/components/CoffeeCard';
+import { toggleVisitedCountry, loadVisitedCountries } from '@/services/diaryStorage';
+import espressoImg from '@assets/generated_images/espresso.jpg';
+import latteImg from '@assets/generated_images/latte.jpg';
+import cappuccinoImg from '@assets/generated_images/cappuccino.jpg';
+import coldBrewImg from '@assets/generated_images/cold-brew.jpg';
+import flatWhiteImg from '@assets/generated_images/flat-white.jpg';
+import americanoImg from '@assets/generated_images/americano.jpg';
+import mochaImg from '@assets/generated_images/mocha.jpg';
+import affogatoImg from '@assets/generated_images/affogato.jpg';
+import vietnameseImg from '@assets/generated_images/vietnamese-iced-coffee.jpg';
+import { coffeeImageMap } from '@/data/coffeeImages';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const imageMap: Record<string, string> = { espresso: espressoImg, latte: latteImg, cappuccino: cappuccinoImg, 'cold-brew': coldBrewImg, 'flat-white': flatWhiteImg, americano: americanoImg, mocha: mochaImg, affogato: affogatoImg, 'vietnamese-iced-coffee': vietnameseImg };
+
+export default function AtlasCountry() {
+  const [, params] = useRoute('/atlas/:country');
+  const country = getAtlasCountry(params?.country);
+  const [visited, setVisited] = useState<string[]>(() => loadVisitedCountries());
+  useEffect(() => window.scrollTo(0, 0), [country?.slug]);
+  if (!country) return <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center"><p className="text-[10px] uppercase tracking-[0.2em] text-accent">Atlas note missing</p><h1 className="mt-4 font-serif text-4xl text-primary">That origin is not on our map.</h1><Link href="/atlas" className="mt-7 rounded-full bg-primary px-5 py-3 text-sm text-primary-foreground">Return to atlas</Link></div>;
+  const countryCoffees = getCountryCoffees(country);
+  const heroImage = country.heroImage || coffeeImageMap[countryCoffees[0]?.id];
+  const relatedCountries = atlasCountries.filter(item => item.slug !== country.slug).slice(0, 3);
+  const isVisited = visited.includes(country.slug);
+  const markVisited = () => setVisited(toggleVisitedCountry(country.slug));
+  return (
+    <div className="min-h-[100dvh] pb-24 pt-32">
+      <div className="mx-auto max-w-[1120px] px-6">
+        <Link href="/atlas" className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><ArrowLeft size={16} /> Back to atlas</Link>
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: EASE }} className="mt-10 grid gap-10 border-b border-border pb-14 lg:grid-cols-[1fr_360px] lg:items-end">
+          <div><p className="text-[10px] uppercase tracking-[0.27em] text-accent">{country.region} · {country.eyebrow}</p><h1 className="mt-4 font-serif text-6xl leading-[.92] text-primary dark:text-primary-foreground md:text-8xl">{country.name}</h1><p className="mt-6 max-w-xl font-serif text-2xl leading-tight text-foreground/80">{country.tagline}</p><p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground">{country.story}</p><button type="button" onClick={markVisited} className={`mt-8 inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${isVisited ? 'border-accent bg-accent text-accent-foreground' : 'border-primary bg-primary text-primary-foreground'}`}>{isVisited ? <Check size={16} /> : null}{isVisited ? 'Collected in passport' : 'Collect this origin'}</button></div>
+          <AtlasMap visited={visited} activeSlug={country.slug} />
+        </motion.div>
+        <section className="grid gap-5 border-b border-border py-10 sm:grid-cols-3"><div className="flex gap-3"><Mountain size={18} className="mt-1 text-accent" /><div><p className="text-[10px] uppercase tracking-[.15em] text-muted-foreground">Elevation</p><p className="mt-1 text-sm">{country.elevation}</p></div></div><div className="flex gap-3"><Sun size={18} className="mt-1 text-accent" /><div><p className="text-[10px] uppercase tracking-[.15em] text-muted-foreground">Climate</p><p className="mt-1 text-sm">{country.climate}</p></div></div><div className="flex gap-3"><Coffee size={18} className="mt-1 text-accent" /><div><p className="text-[10px] uppercase tracking-[.15em] text-muted-foreground">Harvest</p><p className="mt-1 text-sm">{country.harvest}</p></div></div></section>
+         {heroImage && <div className="mt-12 aspect-[16/7] overflow-hidden rounded-[2rem] border border-border"><img src={heroImage} alt={`${country.name} coffee landscape`} className="h-full w-full object-cover" /></div>}
+         <section className="grid gap-12 py-14 lg:grid-cols-[1fr_320px]"><div><p className="text-[10px] uppercase tracking-[.22em] text-accent">Coffee culture</p><h2 className="mt-3 font-serif text-4xl text-primary dark:text-primary-foreground">Taste for the landscape.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-foreground/75">{country.coffeeCulture || country.fieldNote}</p><div className="mt-12 rounded-2xl bg-secondary/40 p-6"><p className="text-[10px] uppercase tracking-[.2em] text-accent">Coffee history</p><p className="mt-4 text-sm leading-7 text-muted-foreground">{country.history || country.story}</p></div><div className="mt-12 flex items-center justify-between border-b border-border pb-4"><h2 className="font-serif text-3xl text-primary dark:text-primary-foreground">Popular coffees</h2><Link href="/explore" className="inline-flex items-center gap-2 text-xs uppercase tracking-[.14em] text-muted-foreground hover:text-primary">See all <ArrowRight size={14} /></Link></div><div className="mt-6 grid gap-6 sm:grid-cols-2">{countryCoffees.map(coffee => <CoffeeCard key={coffee.id} coffee={coffee} imagePath={imageMap[coffee.id] || coffeeImageMap[coffee.id]} />)}</div></div><aside className="h-fit rounded-2xl bg-secondary/50 p-6"><p className="text-[10px] uppercase tracking-[.2em] text-accent">Notebook prompt</p><p className="mt-4 font-serif text-2xl leading-tight text-primary dark:text-primary-foreground">What does this place taste like to you?</p><Link href="/journal" className="mt-7 inline-flex items-center gap-2 text-sm text-primary underline decoration-primary/30 underline-offset-4">Write it down <ArrowRight size={15} /></Link></aside></section>
+         <section className="border-t border-border py-12"><p className="text-[10px] uppercase tracking-[.22em] text-accent">A few details</p><h2 className="mt-3 font-serif text-3xl text-primary dark:text-primary-foreground">Notes to carry with you</h2><div className="mt-7 grid gap-4 md:grid-cols-3">{(country.funFacts || [country.fieldNote, `${country.name} is part of the ${country.region} coffee story.`, `Best remembered through a slow, attentive cup.`]).slice(0, 3).map((fact, index) => <div key={index} className="rounded-2xl border border-border bg-card p-5"><Sparkles size={17} className="text-accent" /><p className="mt-5 text-sm leading-7 text-muted-foreground">{fact}</p></div>)}</div></section>
+         <section className="border-t border-border py-12"><p className="text-[10px] uppercase tracking-[.22em] text-accent">Gallery</p><h2 className="mt-3 font-serif text-3xl text-primary dark:text-primary-foreground">A few frames from the cup</h2><div className="mt-7 grid grid-cols-2 gap-4 md:grid-cols-4">{[...new Set(countryCoffees.map(coffee => coffeeImageMap[coffee.id]).filter(Boolean))].slice(0, 4).map((image, index) => <div key={image} className={`overflow-hidden rounded-2xl bg-secondary ${index === 0 ? 'col-span-2 row-span-2' : ''}`}><img src={image} alt={`${country.name} coffee detail ${index + 1}`} className="h-full min-h-32 w-full object-cover transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]" /></div>)}</div></section>
+         <section className="border-t border-border py-12"><p className="text-[10px] uppercase tracking-[.22em] text-accent">A few details</p><h2 className="mt-3 font-serif text-3xl text-primary dark:text-primary-foreground">Notes to carry with you</h2><div className="mt-7 grid gap-4 md:grid-cols-3">{(country.funFacts || [country.fieldNote, `${country.name} is part of the ${country.region} coffee story.`, `Best remembered through a slow, attentive cup.`]).slice(0, 3).map((fact, index) => <div key={index} className="rounded-2xl border border-border bg-card p-5"><Sparkles size={17} className="text-accent" /><p className="mt-5 text-sm leading-7 text-muted-foreground">{fact}</p></div>)}</div></section>
+         <section className="border-t border-border py-12"><div className="flex items-end justify-between"><div><p className="text-[10px] uppercase tracking-[.22em] text-accent">Related countries</p><h2 className="mt-3 font-serif text-3xl text-primary dark:text-primary-foreground">You may also enjoy</h2></div><Link href="/atlas" className="text-xs uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Back to atlas</Link></div><div className="mt-7 grid gap-4 md:grid-cols-3">{relatedCountries.map(related => <Link key={related.slug} href={`/atlas/${related.slug}`} className="rounded-2xl border border-border bg-card p-5 transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><p className="text-[10px] uppercase tracking-[.15em] text-muted-foreground">{related.region}</p><h3 className="mt-2 font-serif text-2xl text-primary dark:text-primary-foreground">{related.name}</h3><p className="mt-2 text-sm text-muted-foreground">{related.tagline}</p></Link>)}</div></section>
+      </div>
+    </div>
+  );
+}

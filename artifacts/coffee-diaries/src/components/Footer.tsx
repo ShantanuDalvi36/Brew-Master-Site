@@ -42,6 +42,24 @@ export function Footer() {
             >
               Explore Collection
             </Link>
+            <Link
+              href="/journal"
+              className="text-foreground/75"
+              style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--primary))')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
+            >
+              Journal
+            </Link>
+            <Link
+              href="/atlas"
+              className="text-foreground/75"
+              style={{ transition: 'color 350ms cubic-bezier(0.22,1,0.36,1)' }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'hsl(var(--primary))')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '')}
+            >
+              Origin Atlas
+            </Link>
           </div>
           <p className="text-sm text-muted-foreground/70">
             &copy; {new Date().getFullYear()} Coffee Diaries. All rights reserved.
