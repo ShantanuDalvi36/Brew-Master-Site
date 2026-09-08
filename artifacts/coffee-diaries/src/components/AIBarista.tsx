@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "wouter";
+import { coffees } from "@/data/coffees";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -38,7 +40,9 @@ export function AIBarista() {
     { id: 1, text: "Hello! What can I brew for you today?", sender: "barista" },
   ]);
   const [inputValue, setInputValue] = useState("");
+  const [recommendationShown, setRecommendationShown] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const recommendation = coffees.find(coffee => coffee.id === "cappuccino") ?? coffees[0];
 
   // Random blink every 10–15 seconds — adds a class, removes it after animation ends
   useEffect(() => {
@@ -237,6 +241,29 @@ export function AIBarista() {
                 >
                   <X size={20} />
                 </button>
+              </div>
+
+              <div className="border-b border-border bg-secondary/20 p-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRecommendationShown(true);
+                    setMessages(prev => [...prev, { id: Date.now(), text: `I recommend the ${recommendation.name} — balanced, comforting, and quietly special.`, sender: "barista" }]);
+                  }}
+                  className="w-full rounded-xl border border-primary/30 bg-background px-4 py-3 text-left text-sm text-primary hover:border-primary"
+                >
+                  <span className="block text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Not sure what to order?</span>
+                  <span className="mt-1 block font-medium">Recommend something for me</span>
+                </button>
+                {recommendationShown && (
+                  <Link
+                    href={`/coffee/${recommendation.id}/customize`}
+                    onClick={() => setIsOpen(false)}
+                    className="mt-2 block rounded-xl bg-primary px-4 py-3 text-center text-sm text-primary-foreground"
+                  >
+                    Customize &amp; Order {recommendation.name}
+                  </Link>
+                )}
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">

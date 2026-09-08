@@ -60,6 +60,8 @@ export function Footer() {
             >
               Origin Atlas
             </Link>
+            <Link href="/orders" className="text-foreground/75">Orders</Link>
+            <Link href="/cart" className="text-foreground/75">Cart</Link>
           </div>
           <p className="text-sm text-muted-foreground/70">
             &copy; {new Date().getFullYear()} Coffee Diaries. All rights reserved.

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Search, Moon, Sun, Menu, X } from 'lucide-react';
+import { Search, Moon, Sun, Menu, X, ShoppingBag, UserRound } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { cn } from '@/lib/utils';
+import { loadCart } from '@/services/orderStorage';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(() => loadCart().reduce((sum, item) => sum + item.quantity, 0));
   const { theme, setTheme } = useTheme();
   const [location] = useLocation();
 
@@ -16,12 +18,23 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const refreshCart = () => setCartCount(loadCart().reduce((sum, item) => sum + item.quantity, 0));
+    window.addEventListener('coffee-diaries:storage', refreshCart);
+    window.addEventListener('storage', refreshCart);
+    return () => {
+      window.removeEventListener('coffee-diaries:storage', refreshCart);
+      window.removeEventListener('storage', refreshCart);
+    };
+  }, []);
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Explore', path: '/explore' },
     { name: 'Coffee Atlas', path: '/atlas' },
     { name: 'My Journal', path: '/journal' },
     { name: 'Passport', path: '/passport' },
+    { name: 'Orders', path: '/orders' },
   ];
 
   return (
@@ -99,11 +112,21 @@ export function Navbar() {
                   <Moon size={20} strokeWidth={1.5} />
                 )}
               </button>
+              <Link href="/cart" aria-label={`Cart${cartCount ? `, ${cartCount} items` : ''}`} className="relative text-foreground/75 hover:text-primary">
+                <ShoppingBag size={20} strokeWidth={1.5} />
+                {cartCount > 0 && <span className="absolute -right-3 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] text-primary-foreground">{cartCount}</span>}
+              </Link>
+              <Link href="/profile" aria-label="Profile" className="text-foreground/75 hover:text-primary"><UserRound size={20} strokeWidth={1.5} /></Link>
             </div>
           </nav>
 
           {/* Mobile Toggle */}
           <div className="flex items-center gap-4 md:hidden">
+            <Link href="/cart" aria-label={`Cart${cartCount ? `, ${cartCount} items` : ''}`} className="relative text-foreground/75">
+              <ShoppingBag size={20} />
+              {cartCount > 0 && <span className="absolute -right-3 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] text-primary-foreground">{cartCount}</span>}
+            </Link>
+            <Link href="/profile" aria-label="Profile" className="text-foreground/75"><UserRound size={20} /></Link>
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="text-foreground/75"

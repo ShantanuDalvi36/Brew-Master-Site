@@ -1,0 +1,192 @@
+Update the existing Coffee Diaries website into a coffee ordering system while keeping the current design, pages, navigation, and coffee-focused identity.
+
+Do NOT rebuild the project from scratch. Keep the existing soft-minimalist style:
+- Matte cream background
+- Deep maroon accents
+- Warm coffee tones
+- Clean premium typography
+- Spacious layouts
+- Subtle, slow animations
+- Light/dark mode
+- Responsive design
+
+MAIN CHANGE:
+Add a simple coffee ordering flow to the existing website.
+
+ORDERING FLOW:
+Home/Explore
+→ Coffee Details
+→ Customize Coffee
+→ Add to Cart
+→ Cart
+→ Checkout
+→ Order Confirmation
+→ Order Tracking
+→ Order History
+
+1. COFFEE DETAILS
+Update the existing Coffee Detail page to include:
+- Coffee image
+- Name
+- Description
+- Origin
+- Price
+- Recipe/information
+- "Customize & Order" button
+- "Add to Favorites"
+- "Add to Journal"
+
+2. COFFEE CUSTOMIZATION
+Create a simple customization section where users can select:
+- Size: Small / Medium / Large
+- Milk: None / Regular / Oat / Almond
+- Sweetness: None / Low / Medium / High
+- Extra: Extra Shot / Whipped Cream / Syrup
+
+Show the final price dynamically based on selections.
+
+3. CART
+Create a Cart page showing:
+- Coffee name and image
+- Selected customization
+- Quantity
+- Item price
+- Remove item
+- Increase/decrease quantity
+- Total price
+- "Proceed to Checkout"
+
+4. CHECKOUT
+Create a simple Checkout page with:
+- Customer name
+- Phone number
+- Delivery/pickup option
+- Address if delivery is selected
+- Payment method: Cash on Delivery / Online Payment placeholder
+- Order summary
+- Total
+- "Place Order" button
+
+Do not integrate a real payment gateway yet. Use a placeholder/mock payment flow.
+
+5. ORDER CONFIRMATION
+After placing an order, show:
+- Order ID
+- Ordered items
+- Total amount
+- Order status
+- Estimated preparation time
+- Button to track order
+- Button to continue exploring coffees
+
+6. ORDER TRACKING
+Create a simple order tracking page with:
+Order Placed
+→ Preparing
+→ Ready
+→ Completed
+
+Use a clean progress indicator.
+
+7. ORDER HISTORY
+Add an Order History section to the user's account/profile.
+Show:
+- Order ID
+- Date
+- Items
+- Total
+- Status
+- "Order Again" button
+
+8. DATABASE
+Extend the existing database structure with simple tables/models for:
+
+Users
+Coffee
+Country
+Recipe
+Journal
+Favorites
+Achievements
+Cart
+CartItems
+Orders
+OrderItems
+OrderCustomization
+
+Keep relationships simple and reusable.
+
+Orders should store:
+- user
+- total price
+- order status
+- order type
+- address
+- created date
+
+OrderItems should store:
+- order
+- coffee
+- quantity
+- price
+- customization details
+
+9. EXISTING FEATURES
+Do not remove the existing:
+- Coffee Journal
+- Coffee Atlas
+- Coffee Passport
+- Favorites
+- AI Barista
+- Search/filter
+- Achievements
+- Theme switching
+
+Connect them naturally with ordering.
+
+For example:
+Coffee Detail → Customize & Order
+Completed Order → "Add this coffee to your Journal?"
+Order History → "Order Again"
+Atlas → Country → Coffee → Order
+
+10. AI BARISTA
+Keep the existing AI Barista UI.
+
+Add a simple "Recommend something for me" option.
+The AI can recommend a coffee based on user preferences and provide a button:
+"Customize & Order"
+
+Do not build a complicated recommendation system yet.
+
+11. NAVIGATION
+Update navigation to include:
+- Home
+- Explore
+- Atlas
+- Journal
+- Passport
+- Orders
+- Cart
+- Profile
+
+Keep the navigation clean and responsive.
+
+12. IMPORTANT
+Keep the implementation simple and modular.
+Reuse existing components and database structures wherever possible.
+Do not introduce unnecessary libraries.
+Do not redesign the entire website.
+Do not add separate Brew Guide, Learn, or About pages.
+
+The final website should feel like:
+
+Discover a coffee
+→ Learn about it
+→ Customize it
+→ Order it
+→ Track it
+→ Add the experience to your Coffee Journal
+→ Continue exploring the coffee world.
+
+Make sure all pages are connected and the complete flow works smoothly.

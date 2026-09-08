@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRoute, Link } from 'wouter';
-import { ArrowLeft, Coffee, Droplets, Zap, Globe, X, Check } from 'lucide-react';
+import { ArrowLeft, Coffee, Droplets, Zap, Globe, X, Check, Heart, ShoppingBag } from 'lucide-react';
 import { coffees } from '@/data/coffees';
 import { addExploredCoffee, createJournalEntry, loadJournalEntries } from '@/services/diaryStorage';
 import { getCountryForCoffee } from '@/data/atlas';
+import { formatPrice, getBasePrice, isFavorite, toggleFavorite } from '@/services/orderStorage';
 
 import espressoImg from '@assets/generated_images/espresso.jpg';
 import latteImg from '@assets/generated_images/latte.jpg';
@@ -43,10 +44,12 @@ export default function CoffeeDetail() {
   const [notes, setNotes] = useState('');
   const [tastingDate, setTastingDate] = useState(new Date().toISOString().slice(0, 10));
   const [confirmation, setConfirmation] = useState('');
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setSaved(Boolean(id && loadJournalEntries().some(entry => entry.coffeeId === id)));
+    setFavorite(Boolean(id && isFavorite(id)));
   }, [id]);
 
   if (!coffee) {
@@ -102,6 +105,14 @@ export default function CoffeeDetail() {
              {saved ? <Check size={16} /> : null}
              {saved ? 'Add another tasting' : 'Add to Journal'}
            </button>
+           <div className="mt-3 flex flex-wrap items-center gap-3">
+             <Link href={`/coffee/${coffee.id}/customize`} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm text-primary-foreground hover:opacity-90">
+               <ShoppingBag size={16} /> Customize &amp; Order · {formatPrice(getBasePrice(coffee.id))}
+             </Link>
+             <button type="button" onClick={() => { const next = toggleFavorite(coffee.id); setFavorite(next.includes(coffee.id)); setConfirmation(next.includes(coffee.id) ? 'Saved to your favorites.' : 'Removed from your favorites.'); }} className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/15 px-5 py-3 text-sm text-white backdrop-blur-sm hover:bg-white/25">
+               <Heart size={16} fill={favorite ? 'currentColor' : 'none'} /> {favorite ? 'Saved' : 'Add to Favorites'}
+             </button>
+           </div>
         </div>
       </div>
 
@@ -249,7 +260,6 @@ export default function CoffeeDetail() {
               setSaved(true);
               setJournalOpen(false);
               setNotes('');
-              setConfirmation('Added to your journal and passport progress.');
               setConfirmation('Added to your journal and passport progress.');
             }}
             className="w-full max-w-xl rounded-t-[2rem] border border-border bg-card p-6 shadow-[0_24px_80px_rgba(52,28,22,.22)] sm:rounded-[2rem] sm:p-8"

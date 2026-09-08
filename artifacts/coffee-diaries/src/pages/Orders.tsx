@@ -1,0 +1,17 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'wouter';
+import { ArrowRight, Coffee, RotateCcw } from 'lucide-react';
+import { coffees } from '@/data/coffees';
+import { formatPrice, loadOrders, reorder, type Order } from '@/services/orderStorage';
+
+function OrderCard({ order, onReorder }: { order: Order; onReorder: () => void }) {
+  const names = order.items.map(item => coffees.find(coffee => coffee.id === item.coffeeId)?.name).filter(Boolean);
+  return <article className="rounded-[1.75rem] border border-border bg-card p-6"><div className="flex flex-wrap justify-between gap-4"><div><p className="text-xs uppercase tracking-[0.17em] text-muted-foreground">{new Date(order.createdAt).toLocaleDateString()}</p><p className="mt-1 font-serif text-xl text-primary">{order.id}</p></div><span className="h-fit rounded-full bg-secondary px-3 py-1.5 text-xs text-accent">{order.status}</span></div><div className="mt-6 flex items-start gap-3 border-t border-border pt-5 text-sm"><Coffee size={17} className="mt-0.5 text-accent" /><div><p>{names.join(', ')}</p><p className="mt-1 text-muted-foreground">{order.orderType} · {formatPrice(order.total)}</p></div></div><div className="mt-6 flex flex-wrap gap-3"><Link href={`/order/${order.id}/tracking`} className="inline-flex items-center gap-2 rounded-full border border-primary px-4 py-2 text-sm text-primary">Track <ArrowRight size={14} /></Link><button type="button" onClick={() => { reorder(order); onReorder(); }} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground"><RotateCcw size={14} /> Order again</button></div></article>;
+}
+
+export default function Orders() {
+  const [, navigate] = useLocation();
+  const [orders] = useState(loadOrders());
+  const [message, setMessage] = useState('');
+  return <div className="min-h-[100dvh] px-6 pb-32 pt-36"><div className="mx-auto max-w-[1000px]"><div className="flex flex-col justify-between gap-4 border-b border-border pb-8 sm:flex-row sm:items-end"><div><p className="text-xs uppercase tracking-[0.18em] text-accent">Your coffee history</p><h1 className="mt-2 font-serif text-5xl text-primary dark:text-primary-foreground">Orders</h1></div><Link href="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">Order something new <ArrowRight size={15} /></Link></div>{message && <div className="mt-6 rounded-xl bg-secondary/60 p-4 text-sm text-accent" role="status">{message} <button type="button" onClick={() => navigate('/cart')} className="ml-2 underline underline-offset-2">View cart</button></div>}{orders.length === 0 ? <div className="py-24 text-center"><p className="font-serif text-3xl text-primary">No orders yet.</p><p className="mt-3 text-muted-foreground">Your next favorite cup is just around the corner.</p><Link href="/explore" className="mt-7 inline-flex rounded-full bg-primary px-6 py-3 text-sm text-primary-foreground">Explore coffees</Link></div> : <div className="mt-10 grid gap-5 md:grid-cols-2">{orders.map(order => <OrderCard key={order.id} order={order} onReorder={() => setMessage('Your previous order was added to the cart.')} />)}</div>}</div></div>;
+}
