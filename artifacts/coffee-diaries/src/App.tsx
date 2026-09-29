@@ -23,8 +23,6 @@ import OrderTracking from '@/pages/OrderTracking';
 import Orders from '@/pages/Orders';
 import Profile from '@/pages/Profile';
 import Favorites from '@/pages/Favorites';
-import TableOrderEntry from '@/pages/TableOrderEntry';
-import StaffOrders from '@/pages/StaffOrders';
 
 // Luxury easing — used for every transition
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -61,7 +59,6 @@ function Router() {
             <Route path="/atlas" component={Atlas} />
             <Route path="/atlas/:country" component={AtlasCountry} />
             <Route path="/passport" component={Passport} />
-            <Route path="/order" component={TableOrderEntry} />
             <Route path="/cart" component={Cart} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/order/:id/confirmation" component={OrderConfirmation} />
@@ -69,7 +66,6 @@ function Router() {
             <Route path="/orders" component={Orders} />
             <Route path="/profile" component={Profile} />
             <Route path="/favorites" component={Favorites} />
-            <Route path="/staff/orders" component={StaffOrders} />
             <Route component={NotFound} />
           </Switch>
         </PageTransitionWrapper>

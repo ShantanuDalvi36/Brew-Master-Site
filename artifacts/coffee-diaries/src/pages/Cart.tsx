@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { ArrowLeft, Minus, Plus, Trash2 } from 'lucide-react';
 import { coffees } from '@/data/coffees';
 import { coffeeImageMap } from '@/data/coffeeImages';
-import { formatPrice, getCartTotal, loadCart, loadTableContext, removeFromCart, updateCartQuantity, type CartItem } from '@/services/orderStorage';
+import { formatPrice, getCartTotal, loadCart, removeFromCart, updateCartQuantity, type CartItem } from '@/services/orderStorage';
 
 function CartRow({ item, onChange }: { item: CartItem; onChange: () => void }) {
   const coffee = coffees.find(entry => entry.id === item.coffeeId);
@@ -32,7 +32,6 @@ function CartRow({ item, onChange }: { item: CartItem; onChange: () => void }) {
 export default function Cart() {
   const [, navigate] = useLocation();
   const [items, setItems] = useState<CartItem[]>([]);
-  const [tableContext] = useState(loadTableContext());
   const refresh = () => setItems(loadCart());
   useEffect(refresh, []);
 
@@ -54,7 +53,7 @@ export default function Cart() {
               <div className="mt-6 flex justify-between text-sm text-muted-foreground"><span>Subtotal</span><span>{formatPrice(getCartTotal(items))}</span></div>
               <div className="mt-3 flex justify-between text-sm text-muted-foreground"><span>Service</span><span>Included</span></div>
               <div className="mt-6 flex justify-between border-t border-border pt-5 font-serif text-xl text-primary"><span>Total</span><span>{formatPrice(getCartTotal(items))}</span></div>
-              {tableContext ? <button type="button" onClick={() => navigate('/checkout')} className="mt-7 w-full rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground">Place order for Table {tableContext.tableNumber}</button> : <Link href="/order" className="mt-7 block w-full rounded-full bg-primary px-5 py-3.5 text-center text-sm font-medium text-primary-foreground">Scan table QR to order</Link>}
+              <button type="button" onClick={() => navigate('/checkout')} className="mt-7 w-full rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground">Continue to checkout</button>
             </aside>
           </div>
         )}

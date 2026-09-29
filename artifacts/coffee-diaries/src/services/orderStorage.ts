@@ -2,8 +2,9 @@ export type Size = 'Small' | 'Medium' | 'Large';
 export type Milk = 'None' | 'Regular' | 'Oat' | 'Almond';
 export type Sweetness = 'None' | 'Low' | 'Medium' | 'High';
 export type Extra = 'None' | 'Extra Shot' | 'Whipped Cream' | 'Syrup';
-export type PaymentMethod = 'Payment at table' | 'Online Payment';
-export type OrderStatus = 'Order Placed' | 'Preparing' | 'Ready' | 'Served';
+export type OrderType = 'Pickup' | 'Delivery';
+export type PaymentMethod = 'Cash on Delivery' | 'Online Payment';
+export type OrderStatus = 'Order Placed' | 'Preparing' | 'Ready' | 'Completed';
 
 export interface Customization {
   size: Size;
@@ -23,21 +24,21 @@ export interface CartItem {
 
 export interface Order {
   id: string;
-  sessionId?: string;
-  tableNumber?: number;
   items: CartItem[];
   total: number;
   status: OrderStatus;
+  orderType: OrderType;
+  address?: string;
   customerName: string;
   phone: string;
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
   createdAt: string;
+  estimatedMinutes: number;
 }
 
-const CART_KEY = 'coffee-diaries:cart:guest';
+const CART_KEY = 'coffee-diaries:cart';
 const ORDERS_KEY = 'coffee-diaries:orders';
 const FAVORITES_KEY = 'coffee-diaries:favorites';
-const TABLE_CONTEXT_KEY = 'coffee-diaries:table-context';
 
 export const DEFAULT_CUSTOMIZATION: Customization = {
   size: 'Medium',
@@ -86,49 +87,6 @@ function writeJson<T>(key: string, value: T) {
   }
 }
 
-function readSessionJson<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
-  try {
-    const stored = window.sessionStorage.getItem(key);
-    return stored ? (JSON.parse(stored) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeSessionJson<T>(key: string, value: T) {
-  if (typeof window === 'undefined') return;
-  try {
-    window.sessionStorage.setItem(key, JSON.stringify(value));
-    window.dispatchEvent(new CustomEvent('coffee-diaries:storage'));
-  } catch {
-    // The in-memory UI still works when storage is unavailable.
-  }
-}
-
-export interface TableContext {
-  tableNumber: number;
-  sessionId: string;
-  customerName: string;
-  phone: string;
-}
-
-export function loadTableContext() {
-  return readSessionJson<TableContext | null>(TABLE_CONTEXT_KEY, null);
-}
-
-export function saveTableContext(context: TableContext) {
-  writeSessionJson(TABLE_CONTEXT_KEY, context);
-}
-
-export function clearTableContext() {
-  if (typeof window !== 'undefined') window.sessionStorage.removeItem(TABLE_CONTEXT_KEY);
-}
-
-function cartKey() {
-  return loadTableContext()?.sessionId ? `coffee-diaries:cart:${loadTableContext()?.sessionId}` : CART_KEY;
-}
-
 export function getBasePrice(coffeeId: string) {
   return BASE_PRICES[coffeeId] ?? 5;
 }
@@ -146,7 +104,7 @@ export function formatPrice(value: number) {
 }
 
 export function loadCart() {
-  return readSessionJson<CartItem[]>(cartKey(), []);
+  return readJson<CartItem[]>(CART_KEY, []);
 }
 
 function createId(prefix: string) {
@@ -169,24 +127,24 @@ export function addToCart(coffeeId: string, customization: Customization, quanti
   const next = existing
     ? cart.map(item => item.id === existing.id ? { ...item, quantity: item.quantity + quantity } : item)
     : [...cart, { id: createId('cart'), coffeeId, quantity, customization, unitPrice, addedAt: new Date().toISOString() }];
-  writeSessionJson(cartKey(), next);
+  writeJson(CART_KEY, next);
   return next;
 }
 
 export function updateCartQuantity(id: string, quantity: number) {
   const next = loadCart().map(item => item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item);
-  writeSessionJson(cartKey(), next);
+  writeJson(CART_KEY, next);
   return next;
 }
 
 export function removeFromCart(id: string) {
   const next = loadCart().filter(item => item.id !== id);
-  writeSessionJson(cartKey(), next);
+  writeJson(CART_KEY, next);
   return next;
 }
 
 export function clearCart() {
-  writeSessionJson(cartKey(), []);
+  writeJson(CART_KEY, []);
 }
 
 export function getCartTotal(items = loadCart()) {
@@ -216,7 +174,7 @@ export function getOrder(id: string) {
 export function advanceOrderStatus(id: string) {
   const order = getOrder(id);
   if (!order) return undefined;
-  const statuses: OrderStatus[] = ['Order Placed', 'Preparing', 'Ready', 'Served'];
+  const statuses: OrderStatus[] = ['Order Placed', 'Preparing', 'Ready', 'Completed'];
   const nextStatus = statuses[Math.min(statuses.indexOf(order.status) + 1, statuses.length - 1)];
   const updated = { ...order, status: nextStatus };
   writeJson(ORDERS_KEY, loadOrders().map(item => item.id === id ? updated : item));
@@ -226,13 +184,8 @@ export function advanceOrderStatus(id: string) {
 export function reorder(order: Order) {
   const current = loadCart();
   const next = [...current, ...order.items.map(item => ({ ...item, id: createId('cart'), addedAt: new Date().toISOString() }))];
-  writeSessionJson(cartKey(), next);
+  writeJson(CART_KEY, next);
   return next;
-}
-
-export function saveOrder(order: Order) {
-  writeJson(ORDERS_KEY, [order, ...loadOrders().filter(item => item.id !== order.id)]);
-  return order;
 }
 
 export function loadFavorites() {

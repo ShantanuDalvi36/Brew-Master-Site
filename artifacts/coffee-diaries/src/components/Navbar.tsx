@@ -3,13 +3,12 @@ import { Link, useLocation } from 'wouter';
 import { Search, Moon, Sun, Menu, X, ShoppingBag, UserRound } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { cn } from '@/lib/utils';
-import { loadCart, loadTableContext, type TableContext } from '@/services/orderStorage';
+import { loadCart } from '@/services/orderStorage';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => loadCart().reduce((sum, item) => sum + item.quantity, 0));
-  const [tableContext, setTableContext] = useState<TableContext | null>(() => loadTableContext());
   const { theme, setTheme } = useTheme();
   const [location] = useLocation();
 
@@ -20,10 +19,7 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const refreshCart = () => {
-      setCartCount(loadCart().reduce((sum, item) => sum + item.quantity, 0));
-      setTableContext(loadTableContext());
-    };
+    const refreshCart = () => setCartCount(loadCart().reduce((sum, item) => sum + item.quantity, 0));
     window.addEventListener('coffee-diaries:storage', refreshCart);
     window.addEventListener('storage', refreshCart);
     return () => {
@@ -58,18 +54,15 @@ export function Navbar() {
         }}
       >
         <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="text-2xl font-serif font-bold text-primary dark:text-primary-foreground tracking-tight"
-              style={{ transition: 'opacity 350ms cubic-bezier(0.22,1,0.36,1)' }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.7')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-            >
-              Coffee Diaries
-            </Link>
-            {tableContext && <Link href="/cart" className="hidden rounded-full bg-secondary px-3 py-1.5 text-xs text-accent sm:inline-flex">Table {tableContext.tableNumber}</Link>}
-          </div>
+          <Link
+            href="/"
+            className="text-2xl font-serif font-bold text-primary dark:text-primary-foreground tracking-tight"
+            style={{ transition: 'opacity 350ms cubic-bezier(0.22,1,0.36,1)' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.7')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+          >
+            Coffee Diaries
+          </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
